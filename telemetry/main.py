@@ -2,7 +2,6 @@ from listener import get_telemetry
 from db_handler import *
 
 def process_packet(packet, packetId, header):
-    print("\nProcessing packet number: " + str(packetId))
     if packetId == -1:
         pass
     elif packetId == 1:
