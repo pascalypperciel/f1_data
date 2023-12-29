@@ -1,0 +1,24 @@
+.App {
+  display: flex;
+}
+
+.MainContent {
+  flex-grow: 1;
+  transition: margin-left 0.3s ease;
+}
+
+/* When sidebar is open */
+.MainContent.sidebarOpen {
+  margin-left: 240px;
+}
+
+/* When sidebar is closed */
+.MainContent.sidebarClosed {
+  margin-left: 56px;
+}
+
+/* App.css */
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
