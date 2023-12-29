@@ -4,6 +4,7 @@ create table CarStatus (
 	FrameIdentifier		integer		not null,
 	SessionTime 		real		not null,
 	PlayerCarIndex		smallint	not null,
+	ThisIndex			smallint	not null,
 	TractionControl		smallint	null,
 	ABS 				smallint	null,
 	FuelMix				smallint	null,
@@ -48,6 +49,7 @@ create table CarTelemetry (
 	FrameIdentifier		integer		not null,
 	SessionTime 		real		not null,
 	PlayerCarIndex		smallint	not null,
+	ThisIndex			smallint	not null,
 	Speed				integer		null,
 	Throttle			real		null,
 	Steering			real		null,
@@ -89,6 +91,7 @@ create table Lap (
 	FrameIdentifier		integer		not null,
 	SessionTime 		real		not null,
 	PlayerCarIndex		smallint	not null,
+	ThisIndex			smallint	not null,
 	LastLapTime			real		null,
 	CurrentLapTime		real		null,
 	BestLapTime			real		null,
@@ -116,7 +119,7 @@ create table Participant (
 	FrameIdentifier		integer		not null,
 	SessionTime 		real		not null,
 	PlayerCarIndex		smallint	not null,
-	NumOfActiveCars		smallint	null,
+	ThisIndex			smallint	not null,
 	AIControlled		smallint	null,
 	DriverId			smallint	null,
 	TeamId				smallint	null,
@@ -148,6 +151,38 @@ create table Session (
 
 select create_hypertable('Session','time');
 create index idx_session_uid_session on Session (SessionUID);
+
+create table CarSetup (
+	time 				TIMESTAMPTZ	not null,
+	SessionUID			bigint		not null,
+	FrameIdentifier		integer		not null,
+	SessionTime 		real		not null,
+	PlayerCarIndex		smallint	not null,
+	ThisIndex			smallint	not null,
+	frontWing			smallint	null,
+	rearWing			smallint 	null,
+	onThrottle			smallint	null,
+	offThrottle			smallint	null,
+	frontCamber			real		null,
+	rearCamber			real		null,
+	frontToe			real 		null,
+	rearToe				real 		null,
+	frontSuspension		smallint	null,
+	rearSuspension		smallint	null,
+	frontAntiRollBar	smallint	null,
+	rearAntiRollBar		smallint	null,
+	frontSuspensionHeight smallint	null,
+	rearSuspensionHeight  smallint	null,
+	brakePressure		smallint	null,
+	brakeBias 			smallint	null,
+	frontTyrePressure	real		null,
+	rearTyrePressure	real 		null,
+	ballast				smallint	null,
+	fuelLoad			real 		null
+);
+
+select create_hypertable('CarSetup','time');
+create index idx_session_uid_car_setup on Session (SessionUID);
 
 create table Drivers (
 	Id 		smallint	not null,
