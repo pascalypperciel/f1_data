@@ -24,6 +24,8 @@ def get_telemetry():
                 packet = f1_2019_struct.PacketLapData.from_buffer_copy(data[0:843])
             elif packetId == 4:
                 packet = f1_2019_struct.PacketParticipantsData.from_buffer_copy(data[0:1104])
+            elif packetId == 5:
+                packet = f1_2019_struct.PacketCarSetupData.from_buffer_copy(data[0:843])
             elif packetId == 6:
                 packet = f1_2019_struct.PacketCarTelemetryData.from_buffer_copy(data[0:1347])
             elif packetId == 7:

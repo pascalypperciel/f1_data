@@ -67,10 +67,10 @@ def insert_lap_data(packet, header):
 
     try:
         with db_conn.conn.cursor() as cursor:
-            for lap in packet.m_lapsData:
+            for index, lap in enumerate(packet.m_lapsData):
                 insert_query = """
                 INSERT INTO lap
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """
                 cursor.execute(
                     insert_query,
@@ -80,6 +80,7 @@ def insert_lap_data(packet, header):
                         header.m_frameIdentifier,
                         header.m_sessionTime,
                         header.m_playerCarIndex,
+                        index,
                         lap.m_lastLapTime,
                         lap.m_currentLapTime,
                         lap.m_bestLapTime,
@@ -100,7 +101,7 @@ def insert_lap_data(packet, header):
                 )
                 db_conn.conn.commit()
     except Exception as e:
-        print("Error inserting session data:", e)
+        print("Error inserting lap data:", e)
 
 
 def insert_participant_data(packet, header):
@@ -109,10 +110,10 @@ def insert_participant_data(packet, header):
 
     try:
         with db_conn.conn.cursor() as cursor:
-            for participant in packet.m_participants:
+            for index, participant in enumerate(packet.m_participants):
                 insert_query = """
                 INSERT INTO participant
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """
                 cursor.execute(
                     insert_query,
@@ -122,6 +123,7 @@ def insert_participant_data(packet, header):
                         header.m_frameIdentifier,
                         header.m_sessionTime,
                         header.m_playerCarIndex,
+                        index,
                         participant.m_aiControlled,
                         participant.m_driverId,
                         participant.m_teamId,
@@ -132,7 +134,7 @@ def insert_participant_data(packet, header):
                 )
                 db_conn.conn.commit()
     except Exception as e:
-        print("Error inserting session data:", e)
+        print("Error inserting participant data:", e)
 
 
 def insert_car_telemetry_data(packet, header):
@@ -141,10 +143,10 @@ def insert_car_telemetry_data(packet, header):
 
     try:
         with db_conn.conn.cursor() as cursor:
-            for ct in packet.m_carTelemetryData:
+            for index, ct in enumerate(packet.m_carTelemetryData):
                 insert_query = """
                 INSERT INTO cartelemetry
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """
                 cursor.execute(
                     insert_query,
@@ -154,6 +156,7 @@ def insert_car_telemetry_data(packet, header):
                         header.m_frameIdentifier,
                         header.m_sessionTime,
                         header.m_playerCarIndex,
+                        index,
                         ct.m_speed,
                         ct.m_throttle,
                         ct.m_steer,
@@ -188,7 +191,7 @@ def insert_car_telemetry_data(packet, header):
                 )
                 db_conn.conn.commit()
     except Exception as e:
-        print("Error inserting session data:", e)
+        print("Error inserting car telemetry data:", e)
 
 
 def insert_car_status_data(packet, header):
@@ -197,10 +200,10 @@ def insert_car_status_data(packet, header):
 
     try:
         with db_conn.conn.cursor() as cursor:
-            for cs in packet.m_carStatusData:
+            for index, cs in enumerate(packet.m_carStatusData):
                 insert_query = """
                 INSERT INTO carstatus
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """
                 cursor.execute(
                     insert_query,
@@ -210,6 +213,7 @@ def insert_car_status_data(packet, header):
                         header.m_frameIdentifier,
                         header.m_sessionTime,
                         header.m_playerCarIndex,
+                        index,
                         cs.m_tractionControl,
                         cs.m_antiLockBrakes,
                         cs.m_fuelMix,
@@ -247,4 +251,50 @@ def insert_car_status_data(packet, header):
                 )
                 db_conn.conn.commit()
     except Exception as e:
-        print("Error inserting session data:", e)
+        print("Error inserting car status data:", e)
+
+def insert_car_setup_data(packet, header):
+    if db_conn.conn is None:
+        return
+
+    try:
+        with db_conn.conn.cursor() as cursor:
+            for index, cs in enumerate(packet.m_carSetups):
+                insert_query = """
+                INSERT INTO carsetup
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """
+                cursor.execute(
+                    insert_query,
+                    (
+                        datetime.datetime.fromtimestamp(header.m_sessionTime),
+                        header.m_sessionUID,
+                        header.m_frameIdentifier,
+                        header.m_sessionTime,
+                        header.m_playerCarIndex,
+                        index,
+                        cs.m_frontWing,
+                        cs.m_rearWing,
+                        cs.m_onThrottle,
+                        cs.m_offThrottle,
+                        cs.m_frontCamber,
+                        cs.m_rearCamber,
+                        cs.m_frontToe,
+                        cs.m_rearToe,
+                        cs.m_frontSuspension,
+                        cs.m_rearSuspension,
+                        cs.m_frontAntiRollBar,
+                        cs.m_rearAntiRollBar,
+                        cs.m_frontSuspensionHeight,
+                        cs.m_rearSuspensionHeight,
+                        cs.m_brakePressure,
+                        cs.m_brakeBias,
+                        cs.m_frontTyrePressure,
+                        cs.m_rearTyrePressure,
+                        cs.m_ballast,
+                        cs.m_fuelLoad
+                    )
+                )
+                db_conn.conn.commit()
+    except Exception as e:
+        print("Error inserting car setup data:", e)

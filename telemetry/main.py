@@ -10,6 +10,8 @@ def process_packet(packet, packetId, header):
         insert_lap_data(packet, header)
     elif packetId == 4:
         insert_participant_data(packet, header)
+    elif packetId == 5:
+        insert_car_setup_data(packet, header)
     elif packetId == 6:
         insert_car_telemetry_data(packet, header)
     elif packetId == 7:
