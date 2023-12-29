@@ -23,7 +23,7 @@ Here is a diagram of the set-up so far:
 ## Creation of the App
 ##### _December 29, 2023_
 I have now created the app where everything will happen. The app uses the *Electron Framework* to allow me to use *React* (*TypeScript*) to make a nice and interactive frontend. There is a Node.js server application using Express.js as the backend to fetch the data from the database. For now, I only developed the "Dashboard" section of the app that displays some of the data we ingest from the game. It refreshes automatically with the data from the *TimescaleDB* database. I programmed different ways to display different kinds of data, some have line graphs, some have diagrams of an F1 car and others. The interface is easy to use, smooth, and intuitive. There is even a feature to customize your "Home" tab on the dashboard to choose the components you want to see. In the future, I will program the "Analytics" section where I will do some real-time and post-race analysis of the data, and a "Settings" section to let the user customize their experience. Below, a quick walk-around of the app is shown to display the general feel of the app.
-![First demo of the app](images/demo.gif)
+![First demo of the app](images/demo_1.gif)
 
 Here is an updated diagram of the project so far.
 ![Updated diagram of the architecture](images/diagram_2.jpg)
