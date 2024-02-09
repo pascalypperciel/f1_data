@@ -27,3 +27,10 @@ I have now created the app where everything will happen. The app uses the *Elect
 
 Here is an updated diagram of the project so far.
 ![Updated diagram of the architecture](images/diagram_2.jpg)
+
+## Study Time: Basics of Data Analysis
+##### _February 8, 2024_
+The month of January was hectic for me. With school picking back up, my software engineering internship, and implications in clubs/associations, this project's progress slowed down greatly. This project is now something I will only do in my free time. During the month of January, I have decided to study the basics of data analysis. I bought a textbook about it (as shown below) that was greatly recommended on the internet and read it from cover to cover. I also watched multiple videos about it online and completed a small beginner-level guided-project on cognitive class. The next step for this project will be to implement some data analysis elements as I think it is a very interesting field and I think that this project is a great learning opportunity for that.
+
+I'm ready to start pushing the boundaries of my knowledge in this project. Things will only get more interesting from here.
+![Textbook that I bought](images/textbook.jpg)
