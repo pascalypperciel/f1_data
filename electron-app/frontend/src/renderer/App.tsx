@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
-import Sidebar from "./sidebar";
-import TopBar from "./topbar";
-import Dashboard from "./dashboard";
+import Sidebar from "./navigation/sidebar";
+import TopBar from "./navigation/topbar";
+import Dashboard from "./live_dashboard/dashboard";
+import Analysis from "./analysis/analysis";
 import Settings from "./settings";
 import "./App.css";
 
@@ -27,6 +28,10 @@ function App() {
     { label: "Vehicle Condition", route: "/dashboard/vehiclecondition" },
     { label: "Lap", route: "/dashboard/lap" },
     { label: "Session", route: "/dashboard/session" },
+  ];
+
+  const analysisTabs = [
+    { label: "Tyre Strategy", route: "/analysis/tyrestrategy" },
   ];
 
   const settingsTabs = [
@@ -55,11 +60,11 @@ function App() {
                 }
               />
               <Route
-                path="/Analysis/*"
+                path="/analysis/*"
                 element={
                   <>
-                    <p>To be done.</p>
-                    <Settings />
+                    <TopBar tabs={analysisTabs} />
+                    <Analysis />
                   </>
                 }
               />
