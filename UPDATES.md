@@ -34,3 +34,19 @@ The month of January was hectic for me. With school picking back up, my software
 
 I'm ready to start pushing the boundaries of my knowledge in this project. Things will only get more interesting from here.
 ![Textbook that I bought](images/textbook.jpg)
+
+## Development: Tyre Strategy Analysis Tools
+##### _March 22, 2024_
+Alright. I've had very little free time but I've finally managed to finish the first feature in the Analysis tab.
+This tool let's you choose some settings of a Grand Prix you want to simulate, and it tells you the best tyre/pit stop strategy for that race.
+This was a fantastic way to learn **data analysis** and **advanced data visualization**. All the models were made with **linear regression** and **cross-validation**. Although, I have experimented with **CatBoost** models and even **RandomForestRegressor**.
+
+Three models have been made to make this possible:
+| Model | Description |
+| ------ | ------ |
+| Fuel Left | This model is used to determine how much fuel is left in the car at any given time. This is relevant as the car gets faster the lighter it gets. |
+| Tyre Wear | This model is used to determine how worn out the tyres are. This is very important because not only does tyre wear affects lap time, we also need this information to know when we need to change them. |
+| Lap Time | This model is the big one, the two previous models are fed into this one, alongside other features, to simulate a lap time. |
+
+All of these models are used iteratively to simulate entire races. 
+![tyre_strategy_demo](images/tyre_strategy_1.gif)
