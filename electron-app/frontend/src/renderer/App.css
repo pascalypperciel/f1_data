@@ -8,7 +8,7 @@
 }
 
 .MainContent.sidebarOpen {
-  margin-left: 240px;
+  margin-left: var(--drawer-width);
 }
 
 .MainContent.sidebarClosed {

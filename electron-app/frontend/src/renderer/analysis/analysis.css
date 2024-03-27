@@ -38,6 +38,10 @@
   margin-bottom: -20px;
 }
 
+.weather-icon.dark-mode {
+  filter: invert(100%);
+}
+
 /* Sliders */
 .slider-blue .MuiSlider-thumb {
   color: blue;

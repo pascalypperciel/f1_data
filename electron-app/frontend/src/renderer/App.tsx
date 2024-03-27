@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
-import theme from "./theme";
-import Sidebar from "./navigation/sidebar";
+import {lightTheme, darkTheme } from "./settings/theme";
+import Sidebar, { drawerWidth } from "./navigation/sidebar";
 import TopBar from "./navigation/topbar";
 import Dashboard from "./live_dashboard/dashboard";
 import Analysis from "./analysis/analysis";
-import Settings from "./settings";
+import Settings from "./settings/settings";
+import CssBaseline from '@mui/material/CssBaseline';
 import "./App.css";
 
 function App() {
@@ -20,6 +21,21 @@ function App() {
   }, []);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  useEffect(() => {
+      document.documentElement.style.setProperty('--drawer-width', `${drawerWidth}px`);
+  }, [drawerWidth]);
+
+
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem('themeMode');
+    return savedTheme ? savedTheme === 'dark' : false;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('themeMode', darkMode ? 'dark' : 'light');
+  }, [darkMode]);
+
+  const theme = useMemo(() => (darkMode ? darkTheme : lightTheme), [darkMode]);
 
   const dashboardTabs = [
     { label: "Home", route: "/dashboard/home" },
@@ -35,8 +51,8 @@ function App() {
   ];
 
   const settingsTabs = [
-    { label: "Settings Tab 1", route: "/dashboard/home" },
-    { label: "Settings Tab 2", route: "/dashboard/home" },
+    { label: "General", route: "/settings/general" },
+    { label: "Connections", route: "/settings/connections" },
   ];
 
   return (
@@ -64,7 +80,7 @@ function App() {
                 element={
                   <>
                     <TopBar tabs={analysisTabs} />
-                    <Analysis />
+                    <Analysis darkMode={darkMode} />
                   </>
                 }
               />
@@ -72,8 +88,8 @@ function App() {
                 path="/settings/*"
                 element={
                   <>
-                    <p>To be done.</p>
-                    <Settings />
+                    <TopBar tabs={settingsTabs} />
+                    <Settings onToggleDarkMode={() => setDarkMode(!darkMode)} darkMode={darkMode} />
                   </>
                 }
               />
@@ -81,6 +97,7 @@ function App() {
           </div>
         </div>
       </Router>
+      <CssBaseline />
     </ThemeProvider>
   );
 }

@@ -90,102 +90,102 @@ function Dashboard() {
   return (
     <div>
       <Routes>
-      <Route path="home" element={
-        <div style={homeGridStyle}>
-          {/* Car Telemetry */}
-          {selectedForHome['Speedometer'] && (
-            <Paper style={paperStyle} onClick={() => toggleSelection('Speedometer')}>
-              <Speedometer isSelectedForHome={true} onToggleSelected={() => {}} />
-            </Paper>
-          )}
-          {selectedForHome['Speed'] && (
-            <Paper style={paperStyle} onClick={() => toggleSelection('Speed')}>
-              <Speed isSelectedForHome={true} onToggleSelected={() => {}} />
-            </Paper>
-          )}
-          {selectedForHome['Throttle'] && (
-            <Paper style={paperStyle} onClick={() => toggleSelection('Throttle')}>
-              <Throttle isSelectedForHome={true} onToggleSelected={() => {}} />
-            </Paper>
-          )}
-          {selectedForHome['Gear'] && (
-            <Paper style={paperStyle} onClick={() => toggleSelection('Gear')}>
-              <Gear isSelectedForHome={true} onToggleSelected={() => {}} />
-            </Paper>
-          )}
-          {selectedForHome['Brake'] && (
-            <Paper style={paperStyle} onClick={() => toggleSelection('Brake')}>
-              <Brake isSelectedForHome={true} onToggleSelected={() => {}} />
-            </Paper>
-          )}
-          {selectedForHome['TempsPressureWear'] && (
-            <Paper style={paperStyle} onClick={() => toggleSelection('TempsPressureWear')}>
-              <TempsPressureWear isSelectedForHome={true} onToggleSelected={() => {}} />
-            </Paper>
-          )}
-          {selectedForHome['DRS'] && (
-            <Paper style={paperStyle} onClick={() => toggleSelection('DRS')}>
-              <DRS isSelectedForHome={true} onToggleSelected={() => {}} />
-            </Paper>
-          )}
-          {selectedForHome['Clutch'] && (
-            <Paper style={paperStyle} onClick={() => toggleSelection('Clutch')}>
-              <Clutch isSelectedForHome={true} onToggleSelected={() => {}} />
-            </Paper>
-          )}
-          {selectedForHome['Steering'] && (
-            <Paper style={paperStyle} onClick={() => toggleSelection('Steering')}>
-              <Steering isSelectedForHome={true} onToggleSelected={() => {}} />
-            </Paper>
-          )}
-          {/* Vehicle Condition */}
-          {selectedForHome['ABS'] && (
-            <Paper style={paperStyle} onClick={() => toggleSelection('ABS')}>
-              <ABS isSelectedForHome={true} onToggleSelected={() => {}} />
-            </Paper>
-          )}
-          {selectedForHome['ERS'] && (
-            <Paper style={paperStyle} onClick={() => toggleSelection('ERS')}>
-              <ERS isSelectedForHome={true} onToggleSelected={() => {}} />
-            </Paper>
-          )}
-          {selectedForHome['FrontBrakeBias'] && (
-            <Paper style={paperStyle} onClick={() => toggleSelection('FrontBrakeBias')}>
-              <FrontBrakeBias isSelectedForHome={true} onToggleSelected={() => {}} />
-            </Paper>
-          )}
-          {selectedForHome['PitLimiter'] && (
-            <Paper style={paperStyle} onClick={() => toggleSelection('PitLimiter')}>
-              <PitLimiter isSelectedForHome={true} onToggleSelected={() => {}} />
-            </Paper>
-          )}
-          {selectedForHome['TractionControl'] && (
-            <Paper style={paperStyle} onClick={() => toggleSelection('TractionControl')}>
-              <TractionControl isSelectedForHome={true} onToggleSelected={() => {}} />
-            </Paper>
-          )}
-          {selectedForHome['Tyre'] && (
-            <Paper style={paperStyle} onClick={() => toggleSelection('Tyre')}>
-              <Tyre isSelectedForHome={true} onToggleSelected={() => {}} />
-            </Paper>
-          )}
-          {selectedForHome['Damage'] && (
-            <Paper style={paperStyle} onClick={() => toggleSelection('Damage')}>
-              <Damage isSelectedForHome={true} onToggleSelected={() => {}} />
-            </Paper>
-          )}
-          {selectedForHome['Flags'] && (
-            <Paper style={paperStyle} onClick={() => toggleSelection('Flags')}>
-              <Flags isSelectedForHome={true} onToggleSelected={() => {}} />
-            </Paper>
-          )}
-          {selectedForHome['Fuel'] && (
-            <Paper style={paperStyle} onClick={() => toggleSelection('Fuel')}>
-              <Fuel isSelectedForHome={true} onToggleSelected={() => {}} />
-            </Paper>
-          )}
-        </div>
-      } />
+        <Route path="home" element={
+          <div style={homeGridStyle}>
+            {/* Car Telemetry */}
+            {selectedForHome['Speedometer'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('Speedometer')}>
+                <Speedometer isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['Speed'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('Speed')}>
+                <Speed isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['Throttle'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('Throttle')}>
+                <Throttle isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['Gear'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('Gear')}>
+                <Gear isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['Brake'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('Brake')}>
+                <Brake isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['TempsPressureWear'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('TempsPressureWear')}>
+                <TempsPressureWear isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['DRS'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('DRS')}>
+                <DRS isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['Clutch'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('Clutch')}>
+                <Clutch isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['Steering'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('Steering')}>
+                <Steering isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {/* Vehicle Condition */}
+            {selectedForHome['ABS'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('ABS')}>
+                <ABS isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['ERS'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('ERS')}>
+                <ERS isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['FrontBrakeBias'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('FrontBrakeBias')}>
+                <FrontBrakeBias isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['PitLimiter'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('PitLimiter')}>
+                <PitLimiter isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['TractionControl'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('TractionControl')}>
+                <TractionControl isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['Tyre'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('Tyre')}>
+                <Tyre isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['Damage'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('Damage')}>
+                <Damage isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['Flags'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('Flags')}>
+                <Flags isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['Fuel'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('Fuel')}>
+                <Fuel isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+          </div>
+        } />
         <Route
           path="cartelemetry"
           element={

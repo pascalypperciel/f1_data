@@ -14,7 +14,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Divider from "@mui/material/Divider";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const drawerWidth = 240;
+export const drawerWidth = 190;
 
 interface SidebarProps {
   open: boolean;
