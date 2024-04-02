@@ -2,23 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { RadialBarChart, RadialBar, PolarAngleAxis, ResponsiveContainer } from 'recharts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome} from '@fortawesome/free-solid-svg-icons';
+import { useCarTelemetryData } from '../../websocket';
 
 interface SpeedometerProps {
   isSelectedForHome: boolean;
   onToggleSelected: () => void;
 }
 
+interface SpeedometerData {
+  speed: number;
+  enginerpm: number;
+  revlights: number;
+}
+
 const Speedometer: React.FC<SpeedometerProps> = ({ isSelectedForHome, onToggleSelected }) => {
-  const [speedometerData, setSpeedometerData] = useState({ speed: 0, enginerpm: 0, revlights: 0 });
+  const [speedometerData, setSpeedometerData] = useState<SpeedometerData>();
+  const carTelemetryData = useCarTelemetryData();
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/car-telemetry/speedometer')
-      .then(response => response.json())
-      .then(data => {
-        setSpeedometerData(data);
-      })
-      .catch(error => console.error('Error fetching speedometer data:', error));
-  }, []);
+    if (carTelemetryData) {
+      const newSpeedometerData = { speed: carTelemetryData.speed, enginerpm: carTelemetryData.engineRPM, revlights: carTelemetryData.revLightsPercent };
+      setSpeedometerData(newSpeedometerData);
+    }
+  }, [carTelemetryData]);
 
   const getBarColor = (speed: number): string => {
     const threshold = 200;
@@ -34,9 +40,13 @@ const Speedometer: React.FC<SpeedometerProps> = ({ isSelectedForHome, onToggleSe
     }
   };
 
-  const chartData = [{ name: 'Speed', value: speedometerData.speed, fill: getBarColor(speedometerData.speed) }];
+  const chartData = [{
+    name: 'Speed',
+    value: speedometerData?.speed ?? 0, // Provide a fallback value
+    fill: getBarColor(speedometerData?.speed ?? 0) // Ensure getBarColor gets a number
+  }];
 
-  const activeRevLights = Math.floor(speedometerData.revlights / 10);
+  const activeRevLights = Math.floor((speedometerData?.revlights ?? 0) / 10);
 
   const getRevLightColor = (index: number, activeLights: number): string => {
     if (index < activeLights) {
@@ -79,8 +89,8 @@ const Speedometer: React.FC<SpeedometerProps> = ({ isSelectedForHome, onToggleSe
       </ResponsiveContainer>
 
       <div style={{ textAlign: 'center'}}>
-        <p>Speed: {speedometerData.speed} km/h</p>
-        <p>RPM: {speedometerData.enginerpm}</p>
+        <p>Speed: {speedometerData?.speed} km/h</p>
+        <p>RPM: {speedometerData?.enginerpm}</p>
       </div>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
         {Array.from({ length: 10 }).map((_, index) => (

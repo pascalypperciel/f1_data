@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { useCarStatusData } from '../../websocket';
 
 interface FuelProps {
   isSelectedForHome: boolean;
@@ -8,23 +9,14 @@ interface FuelProps {
 }
 
 const Fuel: React.FC<FuelProps> = ({ isSelectedForHome, onToggleSelected }) => {
-  const [fuelData, setFuelData] = useState<any[]>([]);
+  const [fuelData, setFuelData] = useState<number[]>([]);
+  const statusData = useCarStatusData();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/car-status/fuel');
-        const data = await response.json();
-        setFuelData([data.fuelintank, data.fuelcapacity, data.fuelremaininglaps]);
-      } catch (error) {
-        console.error('Error fetching fuel data:', error);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 1000);
-    return () => clearInterval(interval);
-  }, []);
+    if (statusData) {
+      setFuelData([ statusData.fuelInTank, statusData.fuelCapacity, statusData.fuelRemainingLaps]);
+    }
+  }, [statusData]);
 
   return (
     <div>
@@ -40,7 +32,7 @@ const Fuel: React.FC<FuelProps> = ({ isSelectedForHome, onToggleSelected }) => {
         <p>Fuel in Tank: {fuelData[0]} kg</p>
       </div>
       <div className="flex-container">
-        <p> Fuel Capacity: {fuelData[1]} kg</p>
+        <p>Fuel Capacity: {fuelData[1]} kg</p>
       </div>
       <div className="flex-container">
         <p>Laps Remaining: {fuelData[2]}</p>

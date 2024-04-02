@@ -38,7 +38,7 @@ const Speed: React.FC<SpeedProps> = ({ isSelectedForHome, onToggleSelected }) =>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={speedData}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="frame"/>
+          <XAxis hide dataKey="frame"/>
           <YAxis dataKey="speed"/>
           <Tooltip />
           <Line type="monotone" dataKey="speed" stroke="#8884d8" dot={false}/>

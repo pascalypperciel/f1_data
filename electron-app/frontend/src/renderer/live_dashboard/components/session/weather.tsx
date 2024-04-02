@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { useSessionData } from '../../websocket';
 
 interface WeatherProps {
   isSelectedForHome: boolean;
@@ -8,7 +9,8 @@ interface WeatherProps {
 }
 
 const Weather: React.FC<WeatherProps> = ({ isSelectedForHome, onToggleSelected }) => {
-  const [weatherData, setWeatherData] = useState(null);
+  const [weatherData, setWeatherData] = useState<number | null>(null);
+  const sessionData = useSessionData();
 
   const weatherMapping: { [key: number]: string } = {
     0: 'Clear',
@@ -20,20 +22,10 @@ const Weather: React.FC<WeatherProps> = ({ isSelectedForHome, onToggleSelected }
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/session/weather');
-        const data = await response.json();
-        setWeatherData(data.weather);
-      } catch (error) {
-        console.error('Error fetching weather data:', error);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 3000);
-    return () => clearInterval(interval);
-  }, []);
+    if (sessionData) {
+      setWeatherData(sessionData.weather);
+    }
+  }, [sessionData]);
 
   const getWeatherWord = (mode: number) => weatherMapping[mode] || 'N/A';
 

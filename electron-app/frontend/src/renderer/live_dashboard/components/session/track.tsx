@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { useSessionData } from '../../websocket';
 
 interface TrackProps {
   isSelectedForHome: boolean;
@@ -8,7 +9,8 @@ interface TrackProps {
 }
 
 const Track: React.FC<TrackProps> = ({ isSelectedForHome, onToggleSelected }) => {
-  const [trackData, setTrackData] = useState<any[]>([]);
+  const [trackData, setTrackData] = useState<number[]>([]);
+  const sessionData = useSessionData();
 
   const TrackMapping: { [key: number]: string } = {
     0: 'Melbourne',
@@ -39,20 +41,14 @@ const Track: React.FC<TrackProps> = ({ isSelectedForHome, onToggleSelected }) =>
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/session/track');
-        const data = await response.json();
-        setTrackData([data.totallaps, data.trackid, data.tracklength]);
-      } catch (error) {
-        console.error('Error fetching track data:', error);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 3000);
-    return () => clearInterval(interval);
-  }, []);
+    if (sessionData) {
+      setTrackData([
+        sessionData.trackId,
+        sessionData.totalLaps,
+        sessionData.trackLength
+      ]);
+    }
+  }, [sessionData]);
 
 
   const getTrackWord = (mode: number) => TrackMapping[mode] || 'N/A';

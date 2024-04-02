@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCar, faCheck, faHome} from '@fortawesome/free-solid-svg-icons';
+import { useCarTelemetryData, useCarStatusData } from '../../websocket';
 import "../components.css";
 import "./drs.css";
 
@@ -10,8 +11,10 @@ interface DRSProps {
 }
 
 const DRS: React.FC<DRSProps> = ({ isSelectedForHome, onToggleSelected }) => {
-  const [drsEnabled, setDrsEnabled] = useState(null);
-  const [drsAllowed, setDrsAllowed] = useState(null);
+  const [drsEnabled, setDrsEnabled] = useState<number>();
+  const [drsAllowed, setDrsAllowed] = useState<number>();
+  const drsEnabledData = useCarTelemetryData();
+  const drsAllowedData = useCarStatusData();
 
   const drsEnabledIcon = () => (
     <FontAwesomeIcon icon={faCar} style={{ color: drsEnabled ? 'green' : 'red' }} />
@@ -22,26 +25,19 @@ const DRS: React.FC<DRSProps> = ({ isSelectedForHome, onToggleSelected }) => {
   );
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const resEnabled = await fetch('http://localhost:3001/api/car-telemetry/latest-drs-enabled');
-        const dataEnabled = await resEnabled.json();
-        setDrsEnabled(dataEnabled.DrsEnabled);
+    if (drsEnabledData) {
+      const newDRSData = drsEnabledData.drs;
+      setDrsEnabled(newDRSData);
+    }
+  }, [drsEnabledData]);
 
-        const resAllowed = await fetch('http://localhost:3001/api/car-telemetry/latest-drs-allowed');
-        const dataAllowed = await resAllowed.json();
-        setDrsAllowed(dataAllowed.DrsAllowed);
-      } catch (error) {
-        console.error('Error fetching DRS data:', error);
-      }
-    };
+  useEffect(() => {
+    if (drsAllowedData) {
+      const newDRSData = drsAllowedData.drsAllowed;
+      setDrsAllowed(newDRSData);
+    }
+  }, [drsAllowedData]);
 
-    fetchData();
-    const interval = setInterval(fetchData, 500); // Fetch every 0.5 seconds
-    return () => clearInterval(interval);
-  }, []);
-
-  // DRS.js
   return (
     <div>
       <h3 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

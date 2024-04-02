@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { useSessionData } from '../../websocket';
 
 interface TemperatureProps {
   isSelectedForHome: boolean;
@@ -9,22 +10,16 @@ interface TemperatureProps {
 
 const Temperature: React.FC<TemperatureProps> = ({ isSelectedForHome, onToggleSelected }) => {
   const [temperatureData, setTemperatureData] = useState<any[]>([]);
+  const sessionData = useSessionData();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/session/temperature');
-        const data = await response.json();
-        setTemperatureData([data.tracktemp, data.airtemp]);
-      } catch (error) {
-        console.error('Error fetching temperature data:', error);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 2000);
-    return () => clearInterval(interval);
-  }, []);
+    if (sessionData) {
+      setTemperatureData([
+        sessionData.trackTemperature,
+        sessionData.airTemperature
+      ]);
+    }
+  }, [sessionData]);
 
   return (
     <div>

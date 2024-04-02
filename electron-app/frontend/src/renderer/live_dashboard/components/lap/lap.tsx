@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { useLapData } from '../../websocket';
 
 interface LapProps {
   isSelectedForHome: boolean;
@@ -8,23 +9,14 @@ interface LapProps {
 }
 
 const Lap: React.FC<LapProps> = ({ isSelectedForHome, onToggleSelected }) => {
-  const [lapData, setLapData] = useState(null);
+  const [lapData, setLapData] = useState<number | null>(null);
+  const lapDataPacket = useLapData();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/lap/lap');
-        const data = await response.json();
-        setLapData(data.currentlapnum);
-      } catch (error) {
-        console.error('Error fetching current lap data:', error);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 3000);
-    return () => clearInterval(interval);
-  }, []);
+    if (lapDataPacket) {
+      setLapData(lapDataPacket.currentLapNum);
+    }
+  }, [lapDataPacket]);
 
   return (
     <div>

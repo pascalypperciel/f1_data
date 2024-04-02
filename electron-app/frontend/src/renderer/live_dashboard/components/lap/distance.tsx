@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { useLapData } from '../../websocket';
 
 interface DistanceProps {
   isSelectedForHome: boolean;
@@ -8,23 +9,14 @@ interface DistanceProps {
 }
 
 const Distance: React.FC<DistanceProps> = ({ isSelectedForHome, onToggleSelected }) => {
-  const [distanceData, setDistanceData] = useState<any[]>([]);
+  const [distanceData, setDistanceData] = useState<number[]>([]);
+  const lapData = useLapData();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/lap/distance');
-        const data = await response.json();
-        setDistanceData([data.lapdistance, data.totaldistance]);
-      } catch (error) {
-        console.error('Error fetching distance data:', error);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 3000);
-    return () => clearInterval(interval);
-  }, []);
+    if (lapData) {
+      setDistanceData([ lapData.lapDistance, lapData.totalDistance ]);
+    }
+  }, [lapData]);
 
   return (
     <div>

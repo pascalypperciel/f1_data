@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFlag, faHome } from '@fortawesome/free-solid-svg-icons';
+import { useCarStatusData } from '../../websocket';
 
 interface FlagsProps {
   isSelectedForHome: boolean;
@@ -9,6 +10,7 @@ interface FlagsProps {
 
 const Flags: React.FC<FlagsProps> = ({ isSelectedForHome, onToggleSelected }) => {
   const [flagsData, setFlagsData] = useState<number | null>(null);
+  const statusData = useCarStatusData();
 
   const flagsMapping: { [key: number]: { name: string; color: string } } = {
     0: { name: "None", color: "white" },
@@ -19,20 +21,10 @@ const Flags: React.FC<FlagsProps> = ({ isSelectedForHome, onToggleSelected }) =>
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/car-status/flags');
-        const data = await response.json();
-        setFlagsData(data.vehiclefiaflages);
-      } catch (error) {
-        console.error('Error fetching flags data:', error);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 500);
-    return () => clearInterval(interval);
-  }, []);
+    if (statusData) {
+      setFlagsData(statusData.vehicleFiaFlags);
+    }
+  }, [statusData]);
 
   const getFlagDetails = () => {
     const flagDetail = flagsMapping[flagsData ?? -1];

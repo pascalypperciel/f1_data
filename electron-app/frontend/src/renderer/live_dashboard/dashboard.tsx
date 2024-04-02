@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Paper } from "@mui/material";
-import { WebSocketProvider } from "./websocket";
 
 // Car Telemetry
 import Brake from "./components/car_telemetry/brake";
@@ -89,39 +88,356 @@ function Dashboard() {
   };
 
   return (
-    <WebSocketProvider>
-      <div>
-        {/* <button onClick={toggleConnection}>
-          {isConnected ? 'Stop' : 'Start'}
-        </button> */}
-        <Routes>
-          <Route path="home" element={
-            <div style={homeGridStyle}>
-              {selectedForHome['Speed'] && (
-                <Paper style={paperStyle} onClick={() => toggleSelection('Speed')}>
-                  <Speed isSelectedForHome={true} onToggleSelected={() => {}} />
+    <div>
+      <Routes>
+        <Route path="home" element={
+          <div style={homeGridStyle}>
+            {/* Car Telemetry */}
+            {selectedForHome['Speedometer'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('Speedometer')}>
+                <Speedometer isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['Speed'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('Speed')}>
+                <Speed isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['Throttle'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('Throttle')}>
+                <Throttle isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['Gear'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('Gear')}>
+                <Gear isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['Brake'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('Brake')}>
+                <Brake isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['TempsPressureWear'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('TempsPressureWear')}>
+                <TempsPressureWear isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['DRS'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('DRS')}>
+                <DRS isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['Clutch'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('Clutch')}>
+                <Clutch isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['Steering'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('Steering')}>
+                <Steering isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {/* Vehicle Condition */}
+            {selectedForHome['ABS'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('ABS')}>
+                <ABS isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['ERS'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('ERS')}>
+                <ERS isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['FrontBrakeBias'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('FrontBrakeBias')}>
+                <FrontBrakeBias isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['PitLimiter'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('PitLimiter')}>
+                <PitLimiter isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['TractionControl'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('TractionControl')}>
+                <TractionControl isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['Tyre'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('Tyre')}>
+                <Tyre isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['Damage'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('Damage')}>
+                <Damage isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['Flags'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('Flags')}>
+                <Flags isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+            {selectedForHome['Fuel'] && (
+              <Paper style={paperStyle} onClick={() => toggleSelection('Fuel')}>
+                <Fuel isSelectedForHome={true} onToggleSelected={() => {}} />
+              </Paper>
+            )}
+          </div>
+        } />
+        <Route
+          path="cartelemetry"
+          element={
+            <div style={mainContainerStyle}>
+              <div style={columnStyle}>
+                <Paper style={paperStyle}>
+                  <Speedometer
+                    isSelectedForHome={selectedForHome['Speedometer']}
+                    onToggleSelected={() => toggleSelection('Speedometer')}
+                  />
                 </Paper>
-              )}
-            </div>
-          } />
-          <Route
-            path="cartelemetry"
-            element={
-              <div style={mainContainerStyle}>
-                <div style={columnStyle}>
-                  <Paper style={paperStyle}>
-                    <Speed
-                      isSelectedForHome={selectedForHome['Speed']}
-                      onToggleSelected={() => toggleSelection('Speed')}
-                    />
-                  </Paper>
-                </div>
+                <Paper style={paperStyle}>
+                  <Speed
+                    isSelectedForHome={selectedForHome['Speed']}
+                    onToggleSelected={() => toggleSelection('Speed')}
+                  />
+                </Paper>
+                <Paper style={paperStyle}>
+                  <Throttle
+                    isSelectedForHome={selectedForHome['Throttle']}
+                    onToggleSelected={() => toggleSelection('Throttle')}
+                  />
+                </Paper>
+                <Paper style={paperStyle}>
+                  <Gear
+                    isSelectedForHome={selectedForHome['Gear']}
+                    onToggleSelected={() => toggleSelection('Gear')}
+                  />
+                </Paper>
+                <Paper style={paperStyle}>
+                  <Brake
+                    isSelectedForHome={selectedForHome['Brake']}
+                    onToggleSelected={() => toggleSelection('Brake')}
+                  />
+                </Paper>
               </div>
-            }
-          />
-        </Routes>
-      </div>
-    </WebSocketProvider>
+              <div style={columnStyle}>
+                <Paper style={paperStyle}>
+                  <TempsPressureWear
+                    isSelectedForHome={selectedForHome['TempsPressureWear']}
+                    onToggleSelected={() => toggleSelection('TempsPressureWear')}
+                  />
+                </Paper>
+                <Paper style={paperStyle}>
+                  <DRS
+                    isSelectedForHome={selectedForHome['DRS']}
+                    onToggleSelected={() => toggleSelection('DRS')}
+                  />
+                </Paper>
+                <Paper style={paperStyle}>
+                  <Clutch
+                    isSelectedForHome={selectedForHome['Clutch']}
+                    onToggleSelected={() => toggleSelection('Clutch')}
+                  />
+                </Paper>
+                <Paper style={paperStyle}>
+                  <Steering
+                    isSelectedForHome={selectedForHome['Steering']}
+                    onToggleSelected={() => toggleSelection('Steering')}
+                  />
+                </Paper>
+
+              </div>
+            </div>
+          }
+        />
+        <Route
+          path="carsetup"
+          element={
+            <div style={mainContainerStyle}>
+              <Paper style={paperStyle}>
+                <Setup
+                  isSelectedForHome={selectedForHome['Setup']}
+                  onToggleSelected={() => toggleSelection('Setup')}
+                />
+              </Paper>
+            </div>
+          }
+        />
+        <Route
+          path="vehiclecondition"
+          element={
+            <div style={mainContainerStyle}>
+              <div style={columnStyle}>
+                <Paper style={paperStyle}>
+                  <ABS
+                    isSelectedForHome={selectedForHome['ABS']}
+                    onToggleSelected={() => toggleSelection('ABS')}
+                  />
+                </Paper>
+                <Paper style={paperStyle}>
+                  <ERS
+                    isSelectedForHome={selectedForHome['ERS']}
+                    onToggleSelected={() => toggleSelection('ERS')}
+                  />
+                </Paper>
+                <Paper style={paperStyle}>
+                  <FrontBrakeBias
+                    isSelectedForHome={selectedForHome['FrontBrakeBias']}
+                    onToggleSelected={() => toggleSelection('FrontBrakeBias')}
+                  />
+                </Paper>
+                <Paper style={paperStyle}>
+                  <PitLimiter
+                    isSelectedForHome={selectedForHome['PitLimiter']}
+                    onToggleSelected={() => toggleSelection('PitLimiter')}
+                  />
+                </Paper>
+                <Paper style={paperStyle}>
+                  <TractionControl
+                    isSelectedForHome={selectedForHome['TractionControl']}
+                    onToggleSelected={() => toggleSelection('TractionControl')}
+                  />
+                </Paper>
+              </div>
+              <div style={columnStyle}>
+                <Paper style={paperStyle}>
+                  <Tyre
+                    isSelectedForHome={selectedForHome['Tyre']}
+                    onToggleSelected={() => toggleSelection('Tyre')}
+                  />
+                </Paper>
+                <Paper style={paperStyle}>
+                  <Damage
+                    isSelectedForHome={selectedForHome['Damage']}
+                    onToggleSelected={() => toggleSelection('Damage')}
+                  />
+                </Paper>
+                <Paper style={paperStyle}>
+                  <Flags
+                    isSelectedForHome={selectedForHome['Flags']}
+                    onToggleSelected={() => toggleSelection('Flags')}
+                  />
+                </Paper>
+                <Paper style={paperStyle}>
+                  <Fuel
+                    isSelectedForHome={selectedForHome['Fuel']}
+                    onToggleSelected={() => toggleSelection('Fuel')}
+                  />
+                </Paper>
+              </div>
+            </div>
+          }
+        />
+        <Route
+          path="lap"
+          element={
+            <div style={mainContainerStyle}>
+              <div style={columnStyle}>
+                <Paper style={paperStyle}>
+                  <CurrentPosition
+                    isSelectedForHome={selectedForHome['CurrentPosition']}
+                    onToggleSelected={() => toggleSelection('CurrentPosition')}
+                  />
+                </Paper>
+                <Paper style={paperStyle}>
+                  <Distance
+                    isSelectedForHome={selectedForHome['Distance']}
+                    onToggleSelected={() => toggleSelection('Distance')}
+                  />
+                </Paper>
+                <Paper style={paperStyle}>
+                  <DriverStatus
+                    isSelectedForHome={selectedForHome['DriverStatus']}
+                    onToggleSelected={() => toggleSelection('DriverStatus')}
+                  />
+                </Paper>
+                <Paper style={paperStyle}>
+                  <Lap
+                    isSelectedForHome={selectedForHome['Lap']}
+                    onToggleSelected={() => toggleSelection('Lap')}
+                  />
+                </Paper>
+              </div>
+              <div style={columnStyle}>
+                <Paper style={paperStyle}>
+                  <PitStatus
+                    isSelectedForHome={selectedForHome['PitStatus']}
+                    onToggleSelected={() => toggleSelection('PitStatus')}
+                  />
+                </Paper>
+                <Paper style={paperStyle}>
+                  <Sector
+                    isSelectedForHome={selectedForHome['Sector']}
+                    onToggleSelected={() => toggleSelection('Sector')}
+                  />
+                </Paper>
+                <Paper style={paperStyle}>
+                  <StartingPosition
+                    isSelectedForHome={selectedForHome['StartingPosition']}
+                    onToggleSelected={() => toggleSelection('StartingPosition')}
+                  />
+                </Paper>
+                <Paper style={paperStyle}>
+                  <Times
+                    isSelectedForHome={selectedForHome['Times']}
+                    onToggleSelected={() => toggleSelection('Times')}
+                  />
+                </Paper>
+                <Paper style={paperStyle}>
+                  <Penalties
+                    isSelectedForHome={selectedForHome['Penalties']}
+                    onToggleSelected={() => toggleSelection('Penalties')}
+                  />
+                </Paper>
+              </div>
+            </div>
+          }
+        />
+        <Route
+          path="session"
+          element={
+            <div style={mainContainerStyle}>
+              <div style={columnStyle}>
+                <Paper style={paperStyle}>
+                  <SafetyCars
+                    isSelectedForHome={selectedForHome['SafetyCars']}
+                    onToggleSelected={() => toggleSelection('SafetyCars')}
+                  />
+                </Paper>
+                <Paper style={paperStyle}>
+                  <SessionInfo
+                    isSelectedForHome={selectedForHome['SessionInfo']}
+                    onToggleSelected={() => toggleSelection('SessionInfo')}
+                  />
+                </Paper>
+                <Paper style={paperStyle}>
+                  <Temperature
+                    isSelectedForHome={selectedForHome['Temperature']}
+                    onToggleSelected={() => toggleSelection('Temperature')}
+                  />
+                </Paper>
+              </div>
+              <div style={columnStyle}>
+                <Paper style={paperStyle}>
+                  <Track
+                    isSelectedForHome={selectedForHome['Track']}
+                    onToggleSelected={() => toggleSelection('Track')}
+                  />
+                </Paper>
+                <Paper style={paperStyle}>
+                  <Weather
+                    isSelectedForHome={selectedForHome['Weather']}
+                    onToggleSelected={() => toggleSelection('Weather')}
+                  />
+                </Paper>
+              </div>
+            </div>
+          }
+        />
+      </Routes>
+    </div>
   );
 }
 

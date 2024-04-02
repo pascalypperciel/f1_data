@@ -154,7 +154,7 @@ async def udp_server(host, port, websocket):
             try:
               data, addr = udp_socket.recvfrom(2048)  # buffer size
               parsed_data = parse_packet(data)
-              if (parsed_data and parsed_data["type"] == "carTelemetry"):
+              if (parsed_data):
                   await websocket.send(json.dumps(parsed_data))
             except asyncio.CancelledError:
                 break

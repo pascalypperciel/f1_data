@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { useLapData } from '../../websocket';
 
 interface SectorProps {
   isSelectedForHome: boolean;
@@ -9,6 +10,7 @@ interface SectorProps {
 
 const Sector: React.FC<SectorProps> = ({ isSelectedForHome, onToggleSelected }) => {
   const [sectorModeData, setSectorModeData] = useState<number | null>(null);
+  const lapData = useLapData();
 
   const sectorMapping: { [key: number]: string } = {
     0: 'Sector 1',
@@ -17,20 +19,10 @@ const Sector: React.FC<SectorProps> = ({ isSelectedForHome, onToggleSelected }) 
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const resMode = await fetch('http://localhost:3001/api/lap/sector');
-        const dataMode = await resMode.json();
-        setSectorModeData(dataMode.sector);
-      } catch (error) {
-        console.error('Error fetching sector data:', error);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 1000);
-    return () => clearInterval(interval);
-  }, []);
+    if (lapData) {
+      setSectorModeData(lapData.sector);
+    }
+  }, [lapData]);
 
   const getSectorWord = (mode: number) => sectorMapping[mode] || 'N/A';
 

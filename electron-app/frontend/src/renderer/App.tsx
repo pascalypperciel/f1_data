@@ -8,6 +8,7 @@ import Dashboard from "./live_dashboard/dashboard";
 import Analysis from "./analysis/analysis";
 import Settings from "./settings/settings";
 import CssBaseline from '@mui/material/CssBaseline';
+import { WebSocketProvider } from "./live_dashboard/websocket";
 import "./App.css";
 
 function App() {
@@ -56,49 +57,51 @@ function App() {
   ];
 
   return (
-    <ThemeProvider theme={theme}>
-      <Router>
-        <div className="App">
-          <Sidebar open={isSidebarOpen} setOpen={setIsSidebarOpen} />
-          <div
-            className={`MainContent ${
-              isSidebarOpen ? "sidebarOpen" : "sidebarClosed"
-            }`}
-          >
-            <Routes>
-              <Route
-                path="/dashboard/*"
-                element={
-                  <>
-                    <TopBar tabs={dashboardTabs} />
-                    <Dashboard />
-                  </>
-                }
-              />
-              <Route
-                path="/analysis/*"
-                element={
-                  <>
-                    <TopBar tabs={analysisTabs} />
-                    <Analysis darkMode={darkMode} />
-                  </>
-                }
-              />
-              <Route
-                path="/settings/*"
-                element={
-                  <>
-                    <TopBar tabs={settingsTabs} />
-                    <Settings onToggleDarkMode={() => setDarkMode(!darkMode)} darkMode={darkMode} />
-                  </>
-                }
-              />
-            </Routes>
+    <WebSocketProvider>
+      <ThemeProvider theme={theme}>
+        <Router>
+          <div className="App">
+            <Sidebar open={isSidebarOpen} setOpen={setIsSidebarOpen} />
+            <div
+              className={`MainContent ${
+                isSidebarOpen ? "sidebarOpen" : "sidebarClosed"
+              }`}
+            >
+              <Routes>
+                <Route
+                  path="/dashboard/*"
+                  element={
+                    <>
+                      <TopBar tabs={dashboardTabs} />
+                      <Dashboard />
+                    </>
+                  }
+                />
+                <Route
+                  path="/analysis/*"
+                  element={
+                    <>
+                      <TopBar tabs={analysisTabs} />
+                      <Analysis darkMode={darkMode} />
+                    </>
+                  }
+                />
+                <Route
+                  path="/settings/*"
+                  element={
+                    <>
+                      <TopBar tabs={settingsTabs} />
+                      <Settings onToggleDarkMode={() => setDarkMode(!darkMode)} darkMode={darkMode} />
+                    </>
+                  }
+                />
+              </Routes>
+            </div>
           </div>
-        </div>
-      </Router>
-      <CssBaseline />
-    </ThemeProvider>
+        </Router>
+        <CssBaseline />
+      </ThemeProvider>
+    </WebSocketProvider>
   );
 }
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { faCaretSquareDown, faHome } from '@fortawesome/free-solid-svg-icons';
+import { useCarSetupData } from '../../websocket';
 
 interface SetupProps {
   isSelectedForHome: boolean;
@@ -9,6 +10,35 @@ interface SetupProps {
 
 const Setup: React.FC<SetupProps> = ({ isSelectedForHome, onToggleSelected }) => {
   const [setupData, setSetupData] = useState<any[]>([]);
+  const carSetupData = useCarSetupData();
+
+  useEffect(() => {
+    if (carSetupData) {
+      const newSetupData = [
+        carSetupData.frontWing,
+        carSetupData.rearWing,
+        carSetupData.onThrottle,
+        carSetupData.offThrottle,
+        carSetupData.frontCamber,
+        carSetupData.rearCamber,
+        carSetupData.frontToe,
+        carSetupData.rearToe,
+        carSetupData.frontSuspension,
+        carSetupData.rearSuspension,
+        carSetupData.frontAntiRollBar,
+        carSetupData.rearAntiRollBar,
+        carSetupData.frontSuspensionHeight,
+        carSetupData.rearSuspensionHeight,
+        carSetupData.brakePressure,
+        carSetupData.brakeBias,
+        carSetupData.frontTyrePressure,
+        carSetupData.rearTyrePressure,
+        carSetupData.ballast,
+        carSetupData.fuelLoad
+       ];
+      setSetupData(newSetupData);
+    }
+  }, [carSetupData]);
 
   useEffect(() => {
     const fetchData = async () => {

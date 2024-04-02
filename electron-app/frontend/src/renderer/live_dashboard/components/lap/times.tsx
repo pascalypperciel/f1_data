@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { useLapData } from '../../websocket';
 
 interface TimesProps {
   isSelectedForHome: boolean;
@@ -8,23 +9,20 @@ interface TimesProps {
 }
 
 const Times: React.FC<TimesProps> = ({ isSelectedForHome, onToggleSelected }) => {
-  const [timesData, setTimesData] = useState<any[]>([]);
+  const [timesData, setTimesData] = useState<number[]>([]);
+  const lapData = useLapData();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/lap/times');
-        const data = await response.json();
-        setTimesData([data.lastlaptime, data.currentlaptime, data.bestlaptime, data.sector1time, data.sector2time]);
-      } catch (error) {
-        console.error('Error fetching times data:', error);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 3000);
-    return () => clearInterval(interval);
-  }, []);
+    if (lapData) {
+      setTimesData([
+        lapData.lastLapTime,
+        lapData.currentLapTime,
+        lapData.bestLapTime,
+        lapData.sector1Time,
+        lapData.sector2Time
+      ]);
+    }
+  }, [lapData]);
 
   return (
     <div>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import image from '../../../../../../assets/f1-car-side.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome} from '@fortawesome/free-solid-svg-icons';
+import { useCarStatusData } from '../../websocket';
 
 const containerStyle: React.CSSProperties = {
   position: 'relative',
@@ -22,36 +23,19 @@ const Damage: React.FC<DamageProps> = ({ isSelectedForHome, onToggleSelected }) 
     engineDamage: 0,
     gearBoxDamage: 0
   });
+  const statusData = useCarStatusData();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/car-status/damage');
-        const data = await response.json();
-        setStats({
-          tyreDamage: [
-            data.fltyredamage,
-            data.frtyredamage,
-            data.rltyredamage,
-            data.rrtyredamage
-          ],
-          wingDamage: [
-            data.flwingdamage,
-            data.frwingdamage,
-            data.rearwingdamage
-          ],
-          engineDamage: data.enginedamage,
-          gearBoxDamage: data.gearboxdamage
-        });
-      } catch (error) {
-        console.error('Error fetching damage data:', error);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 1000);
-    return () => clearInterval(interval);
-  }, []);
+    if (statusData) {
+      const newTemperatureData = {
+          tyreDamage: statusData.tyresDamage,
+          wingDamage: [statusData.frontLeftWingDamage, statusData.frontRightWingDamage, statusData.rearWingDamage],
+          engineDamage: statusData.engineDamage,
+          gearBoxDamage: statusData.gearBoxDamage,
+         };
+         setStats(newTemperatureData);
+    }
+  }, [statusData]);
 
   const renderDamageBox = (damage: number, leftPercent: number, topPercent: number, key: string) => (
     <div key={key} style={{ position: 'absolute', left: `${leftPercent}%`, top: `${topPercent}%` }}>

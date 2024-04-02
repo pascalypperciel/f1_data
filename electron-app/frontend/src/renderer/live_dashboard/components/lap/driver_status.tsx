@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { useLapData } from '../../websocket';
 
 interface DriverStatusProps {
   isSelectedForHome: boolean;
@@ -9,6 +10,7 @@ interface DriverStatusProps {
 
 const DriverStatus: React.FC<DriverStatusProps> = ({ isSelectedForHome, onToggleSelected }) => {
   const [driverStatusModeData, setDriverStatusModeData] = useState<number | null>(null);
+  const lapData = useLapData();
 
   const driverStatusModeMapping: { [key: number]: string } = {
     0: 'In Garage',
@@ -16,23 +18,13 @@ const DriverStatus: React.FC<DriverStatusProps> = ({ isSelectedForHome, onToggle
     2: 'In Lap',
     3: 'Out Lap',
     4: 'On Track'
-};
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const resMode = await fetch('http://localhost:3001/api/lap/driver-status');
-        const dataMode = await resMode.json();
-        setDriverStatusModeData(dataMode.driverstatus);
-      } catch (error) {
-        console.error('Error fetching driver status data:', error);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 1000);
-    return () => clearInterval(interval);
-  }, []);
+    if (lapData) {
+      setDriverStatusModeData(lapData.driverStatus);
+    }
+  }, [lapData]);
 
   const getDriverStatusModeWord = (mode: number) => driverStatusModeMapping[mode] || 'N/A';
 
