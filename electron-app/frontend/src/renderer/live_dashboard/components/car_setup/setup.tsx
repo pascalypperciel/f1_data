@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretSquareDown, faHome } from '@fortawesome/free-solid-svg-icons';
+import { faHome } from '@fortawesome/free-solid-svg-icons';
 import { useCarSetupData } from '../../websocket';
 
 interface SetupProps {
@@ -39,27 +39,6 @@ const Setup: React.FC<SetupProps> = ({ isSelectedForHome, onToggleSelected }) =>
       setSetupData(newSetupData);
     }
   }, [carSetupData]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/car-setup/setup');
-        const data = await response.json();
-        setSetupData([data.frontwing, data.rearwing, data.onthrottle, data.offthrottle,
-                      data.frontcamber, data.rearcamber, data.fronttoe, data.reartoe,
-                      data.frontsuspension, data.rearsuspension, data.frontantirollbar,
-                      data.rearantirollbar, data.frontsuspensionheight, data.rearsuspensionheight,
-                      data.brakepressure, data.brakebias, data.fronttyrepressure, data.reartyrepressure,
-                      data.ballast, data.fuelload]);
-      } catch (error) {
-        console.error('Error fetching setup data:', error);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 2000);
-    return () => clearInterval(interval);
-  }, []);
 
   const mainContainerStyle: React.CSSProperties = {
     display: 'flex',

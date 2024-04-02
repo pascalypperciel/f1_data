@@ -62,11 +62,7 @@ function App() {
         <Router>
           <div className="App">
             <Sidebar open={isSidebarOpen} setOpen={setIsSidebarOpen} />
-            <div
-              className={`MainContent ${
-                isSidebarOpen ? "sidebarOpen" : "sidebarClosed"
-              }`}
-            >
+            <div className={`MainContent ${isSidebarOpen ? "sidebarOpen" : "sidebarClosed"}`}>
               <Routes>
                 <Route
                   path="/dashboard/*"
