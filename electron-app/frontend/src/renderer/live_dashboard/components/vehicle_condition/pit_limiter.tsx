@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { IconProp } from '@fortawesome/fontawesome-svg-core'
+import { faHome, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { useCarStatusData } from '../../websocket';
 
 interface PitLimiterProps {
@@ -12,9 +13,9 @@ const PitLimiter: React.FC<PitLimiterProps> = ({ isSelectedForHome, onToggleSele
   const [pitLimiterData, setPitLimiterData] = useState<number | null>(null);
   const statusData = useCarStatusData();
 
-  const pitLimiterMapping: { [key: number]: { name: string; } } = {
-    0: { name: "Off"},
-    1: { name: "On"}
+  const pitLimiterMapping: { [key: number]: { name: string, iconPit: IconProp } } = {
+    0: { name: "Off", iconPit: faTimes},
+    1: { name: "On", iconPit: faCheck}
   };
 
   useEffect(() => {
@@ -25,10 +26,10 @@ const PitLimiter: React.FC<PitLimiterProps> = ({ isSelectedForHome, onToggleSele
 
   const getPitLimiterDetails = () => {
     const pitLimiterDetail = pitLimiterMapping[pitLimiterData ?? -1];
-    return pitLimiterDetail || { name: "Unknown"};
+    return pitLimiterDetail || { name: "Unknown", iconPit: faTimes};
   };
 
-  const { name } = getPitLimiterDetails();
+  const { name, iconPit } = getPitLimiterDetails();
 
   return (
     <div>
@@ -42,6 +43,7 @@ const PitLimiter: React.FC<PitLimiterProps> = ({ isSelectedForHome, onToggleSele
       </h3>
       <div className="flex-container">
         <p>{name}</p>
+        <FontAwesomeIcon icon={iconPit} style={{ color: pitLimiterData ? 'green' : 'red' }} />
       </div>
     </div>
   );
