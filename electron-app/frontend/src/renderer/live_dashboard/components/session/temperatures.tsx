@@ -32,10 +32,10 @@ const Temperature: React.FC<TemperatureProps> = ({ isSelectedForHome, onToggleSe
         />
       </h3>
       <div className="flex-container">
-        <p>Track: {temperatureData[0]}°C</p>
+        <p>Track: {typeof temperatureData[0] === 'number' ? temperatureData[0].toFixed(2) : 'N/A'}°C</p>
       </div>
       <div className="flex-container">
-        <p>Air: {temperatureData[1]}°C</p>
+        <p>Air: {typeof temperatureData[1] === 'number' ? temperatureData[1].toFixed(2) : 'N/A'}°C</p>
       </div>
     </div>
   );

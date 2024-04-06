@@ -35,19 +35,19 @@ const Times: React.FC<TimesProps> = ({ isSelectedForHome, onToggleSelected }) =>
         />
       </h3>
       <div className="flex-container">
-        <p>Last Lap Time: {timesData[0]} seconds</p>
+        <p>Last Lap Time: {typeof timesData[0] === 'number' ? timesData[0].toFixed(2) : 'N/A'} seconds</p>
       </div>
       <div className="flex-container">
-        <p>Current Lap Time: {timesData[1]} seconds</p>
+        <p>Current Lap Time: {typeof timesData[1] === 'number' ? timesData[1].toFixed(2) : 'N/A'} seconds</p>
       </div>
       <div className="flex-container">
-        <p>Best Lap Time: {timesData[2]} seconds</p>
+        <p>Best Lap Time: {typeof timesData[2] === 'number' ? timesData[2].toFixed(2) : 'N/A'} seconds</p>
       </div>
       <div className="flex-container">
-        <p>Sector 1 Time: {timesData[3]} seconds</p>
+        <p>Sector 1 Time: {typeof timesData[3] === 'number' ? timesData[3].toFixed(2) : 'N/A'} seconds</p>
       </div>
       <div className="flex-container">
-        <p>Sector 2 Time: {timesData[4]} seconds</p>
+        <p>Sector 2 Time: {typeof timesData[4] === 'number' ? timesData[4].toFixed(2) : 'N/A'} seconds</p>
       </div>
     </div>
   );

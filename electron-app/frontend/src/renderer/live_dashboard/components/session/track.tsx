@@ -64,10 +64,10 @@ const Track: React.FC<TrackProps> = ({ isSelectedForHome, onToggleSelected }) =>
         />
       </h3>
       <div className="flex-container">
-        <p>Name: {trackData[1] !== null ? getTrackWord(trackData[1]) : 'N/A'}</p>
+        <p>Name: {trackData[0]}</p>
       </div>
       <div className="flex-container">
-        <p>Total Laps: {trackData[0]}</p>
+        <p>Total Laps: {trackData[1]}</p>
       </div>
       <div className="flex-container">
         <p>Length: {trackData[2]}m</p>

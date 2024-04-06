@@ -34,13 +34,13 @@ const Fuel: React.FC<FuelProps> = ({ isSelectedForHome, onToggleSelected }) => {
         />
       </h3>
       <div className="flex-container">
-        <p>Fuel in Tank: {fuelData[0]} kg</p>
+        <p>Fuel in Tank: {typeof fuelData[0] === 'number' ? fuelData[0].toFixed(2) : 'N/A'} kg</p>
       </div>
       <div className="flex-container">
         <p>Fuel Capacity: {fuelData[1]} kg</p>
       </div>
       <div className="flex-container">
-        <p>Laps Remaining: {fuelData[2]}</p>
+        <p>Laps Remaining: {typeof fuelData[2] === 'number' ? fuelData[2].toFixed(2) : 'N/A'}</p>
       </div>
       <div className="flex-container">
       <p>Fuel Mix: {getFuelMixString(fuelData[3])}</p>

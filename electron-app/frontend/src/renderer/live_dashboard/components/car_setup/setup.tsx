@@ -84,10 +84,10 @@ const Setup: React.FC<SetupProps> = ({ isSelectedForHome, onToggleSelected }) =>
             <p>Rear Camber Angle: {setupData[5]}°</p>
           </div>
           <div className="flex-container">
-            <p>Front Toe Angle: {setupData[6]}°</p>
+            <p>Front Toe Angle: {typeof setupData[6] === 'number' ? setupData[6].toFixed(2) : 'N/A'}°</p>
           </div>
           <div className="flex-container">
-            <p>Rear Toe Angle: {setupData[7]}°</p>
+            <p>Rear Toe Angle: {typeof setupData[7] === 'number' ? setupData[7].toFixed(2) : 'N/A'}°</p>
           </div>
           <div className="flex-container">
             <p>Front Suspension: {setupData[8]}</p>

@@ -29,10 +29,10 @@ const Distance: React.FC<DistanceProps> = ({ isSelectedForHome, onToggleSelected
         />
       </h3>
       <div className="flex-container">
-        <p>Current Lap Distance: {distanceData[0]}m</p>
+        <p>Current Lap Distance: {typeof distanceData[0] === 'number' ? distanceData[0].toFixed(2) : 'N/A'}m</p>
       </div>
       <div className="flex-container">
-        <p>Total Distance: {distanceData[1]}m</p>
+        <p>Total Distance: {typeof distanceData[1] === 'number' ? distanceData[1].toFixed(2) : 'N/A'}m</p>
       </div>
     </div>
   );
