@@ -12,9 +12,14 @@ const Fuel: React.FC<FuelProps> = ({ isSelectedForHome, onToggleSelected }) => {
   const [fuelData, setFuelData] = useState<number[]>([]);
   const statusData = useCarStatusData();
 
+  const getFuelMixString = (value: number): string => {
+    const fuelMixMap = ['Lean', 'Standard', 'Rich', 'Max'];
+    return fuelMixMap[value] || 'unknown';
+  };
+
   useEffect(() => {
     if (statusData) {
-      setFuelData([ statusData.fuelInTank, statusData.fuelCapacity, statusData.fuelRemainingLaps]);
+      setFuelData([ statusData.fuelInTank, statusData.fuelCapacity, statusData.fuelRemainingLaps, statusData.fuelMix]);
     }
   }, [statusData]);
 
@@ -36,6 +41,9 @@ const Fuel: React.FC<FuelProps> = ({ isSelectedForHome, onToggleSelected }) => {
       </div>
       <div className="flex-container">
         <p>Laps Remaining: {fuelData[2]}</p>
+      </div>
+      <div className="flex-container">
+      <p>Fuel Mix: {getFuelMixString(fuelData[3])}</p>
       </div>
     </div>
   );
