@@ -37,15 +37,29 @@ const Damage: React.FC<DamageProps> = ({ isSelectedForHome, onToggleSelected }) 
     }
   }, [statusData]);
 
+  const getDamageColor = (damage: number): string => {
+    if (damage < 40) {
+      return `rgb(0, ${255 - ((damage) / 40) * 255}, 0)`;
+    } else {
+      return `rgb(${((damage) / 100) * 255}, 0, 0)`;
+    }
+
+  };
+
   const renderDamageBox = (damage: number, leftPercent: number, topPercent: number, key: string) => (
-    <div key={key} style={{ position: 'absolute', left: `${leftPercent}%`, top: `${topPercent}%` }}>
-      <strong>{damage}%</strong>
+    <div key={key} style={{ position: 'absolute', left: `${leftPercent}%`, top: `${topPercent}%`, color: getDamageColor(damage) }}>
+      <strong style={{
+          fontWeight: '900',
+          fontSize: '1.5em'
+        }}>
+      {damage} %
+    </strong>
     </div>
   );
 
   const renderDamageTextBox = (textType: string, damage: number, leftPercent: number, topPercent: number, key: string) => (
     <div key={key} style={{ position: 'absolute', left: `${leftPercent}%`, top: `${topPercent}%` }}>
-      {textType}: <strong>{damage}%</strong>
+      {textType}: <strong style={{ color: getDamageColor(damage), fontWeight: '900', fontSize: '1em' }}>{damage}%</strong>
     </div>
   );
 
@@ -68,9 +82,9 @@ return (
     <img src={image} alt="F1 Car" style={{ width: '100%', height: 'auto', marginTop: '10%', marginBottom: '10%' }} />
 
       {stats.tyreDamage.map((damage, index) =>
-        renderDamageBox(damage, 12 + 61 * tyreOffsetY[index], 24 + 48 * tyreOffsetX[index], `brake-damage-${index}`))}
+        renderDamageBox(damage, 12 + 61 * tyreOffsetY[index], 22 + 48 * tyreOffsetX[index], `brake-damage-${index}`))}
       {stats.wingDamage.map((damage, index) =>
-        renderDamageBox(damage, 4 + 84 * wingOffsetY[index], 13 + 70 * wingOffsetX[index], `wing-damage-${index}`))}
+        renderDamageBox(damage, 4 + 84 * wingOffsetY[index], 11 + 70 * wingOffsetX[index], `wing-damage-${index}`))}
       {renderDamageTextBox("Engine", stats.engineDamage, 31, 46, "engine-damage")}
       {renderDamageTextBox("Gear Box", stats.engineDamage, 31, 50, "gear-box-damage")}
     </div>

@@ -49,6 +49,18 @@ const TempsPressureWear: React.FC<TempsPressureWearProps> = ({ isSelectedForHome
     }
   }, [carStatusData]);
 
+  const getWearColor = (wear: number): string => {
+    if (wear < 20) {
+      return `rgb(${255 * (wear / 20)}, 255, 0)`; // Green to yellow
+    } else if (wear < 40) {
+      return `rgb(255, ${255 - ((wear - 20) / 20) * 255}, 0)`; // Yellow to orange
+    } else if (wear < 60) {
+      return `rgb(255, 0, 0)`; // Red
+    } else {
+      return `rgb(${139 - ((wear - 60) / 40) * 139}, 0, 0)`; // Dark red
+    }
+  };
+
   const renderTempBox = (textType: string, temp: number, leftPercent: number, topPercent: number, key: string) => (
     <div key={key} style={{ position: 'absolute', left: `${leftPercent}%`, top: `${topPercent}%` }}>
       {textType}: <strong>{temp ? `${temp}°C` : 'N/A'}</strong>
@@ -62,8 +74,13 @@ const TempsPressureWear: React.FC<TempsPressureWearProps> = ({ isSelectedForHome
   );
 
   const renderWearBox = (wear: number, leftPercent: number, topPercent: number, key: string) => (
-    <div key={key} style={{ position: 'absolute', left: `${leftPercent}%`, top: `${topPercent}%` }}>
-      <strong>{wear} %</strong>
+    <div key={key} style={{ position: 'absolute', left: `${leftPercent}%`, top: `${topPercent}%`, color: getWearColor(wear) }}>
+      <strong style={{
+          fontWeight: '900',
+          fontSize: '2.2em'
+        }}>
+      {wear} %
+    </strong>
     </div>
   );
 
@@ -89,10 +106,10 @@ return (
       {temperatures.tyreInnerTemps.map((temp, index) =>
         renderTempBox("Inner", temp, 8 + 61 * arrayOffsetY[index], 10 + 83 * arrayOffsetX[index], `inner-temp-${index}`))}
       {temperatures.tyrePressures.map((pressure, index) =>
-        renderPressureBox(pressure, 8 + 60 * arrayOffsetY[index], 22 + 48 * arrayOffsetX[index], `pressure-${index}`))}
+        renderPressureBox(pressure, 8 + 60 * arrayOffsetY[index], 19 + 48 * arrayOffsetX[index], `pressure-${index}`))}
       {renderTempBox("Engine", temperatures.engineTemp, 31, 48, "engine-temp")}
       {tyreWear.tyreWear.map((wear, index) =>
-        renderWearBox(wear, 11+ 62 * arrayOffsetY[index], 26 + 48 * arrayOffsetX[index], `wear-${index}`))}
+        renderWearBox(wear, 11+ 62 * arrayOffsetY[index], 23 + 48 * arrayOffsetX[index], `wear-${index}`))}
     </div>
   </div>
 );
