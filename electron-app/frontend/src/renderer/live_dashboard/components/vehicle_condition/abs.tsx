@@ -37,7 +37,7 @@ const ABS: React.FC<AbsProps> = ({ isSelectedForHome, onToggleSelected }) => {
       </h3>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={absData}>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid strokeDasharray="3 3" vertical={false}/>
           <XAxis hide dataKey="frame"/>
           <YAxis dataKey="abs"/>
           <Tooltip />

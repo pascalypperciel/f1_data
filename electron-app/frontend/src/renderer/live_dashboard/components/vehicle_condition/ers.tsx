@@ -53,7 +53,7 @@ const ERS: React.FC<ERSProps> = ({ isSelectedForHome, onToggleSelected }) => {
       </div>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={ersStoreData}>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid strokeDasharray="3 3" vertical={false}/>
           <XAxis hide dataKey="frame"/>
           <YAxis dataKey="ersstoreenergy"/>
           <Tooltip />

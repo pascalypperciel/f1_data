@@ -37,7 +37,7 @@ const Clutch: React.FC<ClutchProps> = ({ isSelectedForHome, onToggleSelected }) 
       </h3>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={clutchData}>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid strokeDasharray="3 3" vertical={false}/>
           <XAxis hide dataKey="frame"/>
           <YAxis dataKey="clutch"/>
           <Tooltip />

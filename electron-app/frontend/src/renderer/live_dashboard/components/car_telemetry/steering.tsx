@@ -37,7 +37,7 @@ const Steering: React.FC<SteeringProps> = ({ isSelectedForHome, onToggleSelected
       </h3>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={steeringData}>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid strokeDasharray="3 3" vertical={false}/>
           <XAxis hide dataKey="frame"/>
           <YAxis dataKey="steering"/>
           <Tooltip />

@@ -42,8 +42,8 @@ const Speedometer: React.FC<SpeedometerProps> = ({ isSelectedForHome, onToggleSe
 
   const chartData = [{
     name: 'Speed',
-    value: speedometerData?.speed ?? 0, // Provide a fallback value
-    fill: getBarColor(speedometerData?.speed ?? 0) // Ensure getBarColor gets a number
+    value: speedometerData?.speed ?? 0,
+    fill: getBarColor(speedometerData?.speed ?? 0)
   }];
 
   const activeRevLights = Math.floor((speedometerData?.revlights ?? 0) / 10);
