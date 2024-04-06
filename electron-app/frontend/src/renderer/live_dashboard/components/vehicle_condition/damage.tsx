@@ -79,7 +79,7 @@ return (
       />
     </h3>
     <div style={containerStyle}>
-    <img src={image} alt="F1 Car" style={{ width: '100%', height: 'auto', marginTop: '10%', marginBottom: '10%' }} />
+    <img src={image} alt="F1 Car" style={{ width: '100%', height: 'auto', marginTop: '10%', marginBottom: '10%', filter: 'invert(50%)' }} />
 
       {stats.tyreDamage.map((damage, index) =>
         renderDamageBox(damage, 12 + 61 * tyreOffsetY[index], 22 + 48 * tyreOffsetX[index], `brake-damage-${index}`))}

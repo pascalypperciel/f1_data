@@ -98,7 +98,7 @@ return (
       />
     </h3>
     <div style={containerStyle}>
-    <img src={image} alt="F1 Car" style={{ width: '100%', height: 'auto', marginTop: '10%', marginBottom: '10%' }} />
+    <img src={image} alt="F1 Car" style={{ width: '100%', height: 'auto', marginTop: '10%', marginBottom: '10%', filter: 'invert(50%)' }} />
       {temperatures.brakeTemps.map((temp, index) =>
         renderTempBox("Brake", temp, 8 + 61 * arrayOffsetY[index], 2 + 83 * arrayOffsetX[index], `brake-temp-${index}`))}
       {temperatures.tyreSurfaceTemps.map((temp, index) =>
