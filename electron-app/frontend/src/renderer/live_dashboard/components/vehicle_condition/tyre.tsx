@@ -53,7 +53,7 @@ const Tyres: React.FC<TyresProps> = ({ isSelectedForHome, onToggleSelected }) =>
         )}
         <div style={{ marginTop: '10px', fontWeight: 'bold', fontSize: '1.2em' }}>
           {tyreCompoundNames.map((compound, index) => (
-            <span key={compound} style={{ color: actualTyreCompound === index + 16 ? 'blue' : 'black', marginRight: '5px' }}>
+            <span key={compound} style={{ color: actualTyreCompound === index + 16 ? 'blue' : 'grey', marginRight: '5px' }}>
               {compound}
             </span>
           ))}
