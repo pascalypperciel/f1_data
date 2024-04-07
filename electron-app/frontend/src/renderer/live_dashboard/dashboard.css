@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+/* Fonts */
+.bebas-neue-screen {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 20px;
+  text-align: center;
+  margin-top: 0px;
+  color: rgb(194, 194, 194);
+}
+
+.middle-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 90vh; /* Make container take up the full viewport height */
+}
