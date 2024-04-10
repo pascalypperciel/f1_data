@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { useSessionData } from '../../websocket';
 
 interface SessionInfoProps {
   isSelectedForHome: boolean;
@@ -8,7 +9,8 @@ interface SessionInfoProps {
 }
 
 const SessionInfo: React.FC<SessionInfoProps> = ({ isSelectedForHome, onToggleSelected }) => {
-  const [sessionInfoData, setSessionInfoData] = useState<any[]>([]);
+  const [sessionInfoData, setSessionInfoData] = useState<number[]>([]);
+  const sessionData = useSessionData();
 
   const TypeMapping: { [key: number]: string } = {
     0: 'Unknown',
@@ -27,20 +29,14 @@ const SessionInfo: React.FC<SessionInfoProps> = ({ isSelectedForHome, onToggleSe
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/session/session-info');
-        const data = await response.json();
-        setSessionInfoData([data.sessiontype, data.sessionduration, data.sessiontimeleft]);
-      } catch (error) {
-        console.error('Error fetching session info data:', error);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 3000);
-    return () => clearInterval(interval);
-  }, []);
+    if (sessionData) {
+      setSessionInfoData([
+        sessionData.sessionType,
+        sessionData.sessionDuration,
+        sessionData.sessionTimeLeft
+      ]);
+    }
+  }, [sessionData]);
 
 
   const getTypeWord = (mode: number) => TypeMapping[mode] || 'N/A';
@@ -55,14 +51,19 @@ const SessionInfo: React.FC<SessionInfoProps> = ({ isSelectedForHome, onToggleSe
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>Type: {sessionInfoData[0] !== null ? getTypeWord(sessionInfoData[0]) : 'N/A'}</p>
-      </div>
-      <div className="flex-container">
-        <p>Duration: {sessionInfoData[1]} seconds</p>
-      </div>
-      <div className="flex-container">
-        <p>Time Left: {sessionInfoData[2]} seconds</p>
+      <div style={{display:'flex', justifyContent:'space-evenly'}}>
+        <div>
+          <div className='text-over-graph'>Session Type</div>
+          <div className='number-over-graph'>{sessionInfoData[0] !== null ? getTypeWord(sessionInfoData[0]) : 'N/A'}</div>
+        </div>
+        <div>
+          <div className='text-over-graph'>Duration</div>
+          <div className='number-over-graph'>{sessionInfoData[1]} seconds</div>
+        </div>
+        <div>
+          <div className='text-over-graph'>Time Left</div>
+          <div className='number-over-graph'>{sessionInfoData[2]} seconds</div>
+        </div>
       </div>
     </div>
   );

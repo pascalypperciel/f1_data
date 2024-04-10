@@ -2,23 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { RadialBarChart, RadialBar, PolarAngleAxis, ResponsiveContainer } from 'recharts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome} from '@fortawesome/free-solid-svg-icons';
+import { useCarTelemetryData } from '../../websocket';
 
 interface SpeedometerProps {
   isSelectedForHome: boolean;
   onToggleSelected: () => void;
 }
 
+interface SpeedometerData {
+  speed: number;
+  enginerpm: number;
+  revlights: number;
+}
+
 const Speedometer: React.FC<SpeedometerProps> = ({ isSelectedForHome, onToggleSelected }) => {
-  const [speedometerData, setSpeedometerData] = useState({ speed: 0, enginerpm: 0, revlights: 0 });
+  const [speedometerData, setSpeedometerData] = useState<SpeedometerData>();
+  const carTelemetryData = useCarTelemetryData();
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/car-telemetry/speedometer')
-      .then(response => response.json())
-      .then(data => {
-        setSpeedometerData(data);
-      })
-      .catch(error => console.error('Error fetching speedometer data:', error));
-  }, []);
+    if (carTelemetryData) {
+      const newSpeedometerData = { speed: carTelemetryData.speed, enginerpm: carTelemetryData.engineRPM, revlights: carTelemetryData.revLightsPercent };
+      setSpeedometerData(newSpeedometerData);
+    }
+  }, [carTelemetryData]);
 
   const getBarColor = (speed: number): string => {
     const threshold = 200;
@@ -34,9 +40,13 @@ const Speedometer: React.FC<SpeedometerProps> = ({ isSelectedForHome, onToggleSe
     }
   };
 
-  const chartData = [{ name: 'Speed', value: speedometerData.speed, fill: getBarColor(speedometerData.speed) }];
+  const chartData = [{
+    name: 'Speed',
+    value: speedometerData?.speed ?? 0,
+    fill: getBarColor(speedometerData?.speed ?? 0)
+  }];
 
-  const activeRevLights = Math.floor(speedometerData.revlights / 10);
+  const activeRevLights = Math.floor((speedometerData?.revlights ?? 0) / 10);
 
   const getRevLightColor = (index: number, activeLights: number): string => {
     if (index < activeLights) {
@@ -57,7 +67,7 @@ const Speedometer: React.FC<SpeedometerProps> = ({ isSelectedForHome, onToggleSe
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <ResponsiveContainer width="100%" height={200}>
+      <ResponsiveContainer width="100%" height={300}>
         <RadialBarChart
           innerRadius="100%"
           outerRadius="60%"
@@ -71,24 +81,29 @@ const Speedometer: React.FC<SpeedometerProps> = ({ isSelectedForHome, onToggleSe
             tick={false}
           />
           <RadialBar
-            label={{ position: 'insideStart', fill: '#fff' }}
             background
             dataKey="value"
           />
         </RadialBarChart>
       </ResponsiveContainer>
 
-      <div style={{ textAlign: 'center'}}>
-        <p>Speed: {speedometerData.speed} km/h</p>
-        <p>RPM: {speedometerData.enginerpm}</p>
+      <div>
+        <div className='number-over-graph' style={{marginTop:'-180px'}}>{speedometerData?.speed}</div>
+        <div className='text-over-graph' style={{marginBottom:'90px'}}>KM/H</div>
+      </div>
+      <div style={{display:'flex', justifyContent:'space-evenly'}}>
+        <div>
+          <div className='text-over-graph'>RPM</div>
+          <div className='number-over-graph' style={{marginBottom:'-20px'}}>{speedometerData?.enginerpm}</div>
+        </div>
       </div>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
         {Array.from({ length: 10 }).map((_, index) => (
           <div
             key={index}
             style={{
-              width: '20px',
-              height: '20px',
+              width: '25px',
+              height: '25px',
               borderRadius: '50%',
               backgroundColor: getRevLightColor(index, activeRevLights),
               margin: '0 2px',

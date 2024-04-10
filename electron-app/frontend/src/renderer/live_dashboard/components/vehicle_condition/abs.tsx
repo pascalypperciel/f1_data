@@ -2,29 +2,28 @@ import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome} from '@fortawesome/free-solid-svg-icons';
+import { useCarStatusData } from '../../websocket';
 
 interface AbsProps {
   isSelectedForHome: boolean;
   onToggleSelected: () => void;
 }
 
-const ABS: React.FC<AbsProps> = ({ isSelectedForHome, onToggleSelected }) => {
-  const [absData, setAbsData] = useState([]);
+interface ABSDataPoint {
+  abs: number;
+  frame: number;
+}
 
-  const fetchData = () => {
-    fetch('http://localhost:3001/api/car-status/abs')
-      .then(response => response.json())
-      .then(data => {
-        setAbsData(data.reverse());
-      })
-      .catch(error => console.error('Error fetching abs data:', error));
-  };
+const ABS: React.FC<AbsProps> = ({ isSelectedForHome, onToggleSelected }) => {
+  const [absData, setAbsData] = useState<ABSDataPoint[]>([]);
+  const statusData = useCarStatusData();
 
   useEffect(() => {
-    fetchData();
-    const interval = setInterval(fetchData, 1000); // Fetch data every 1 seconds
-    return () => clearInterval(interval);
-  }, []);
+    if (statusData) {
+      const newSpeedDataPoint = { abs: statusData.antiLockBrakes, frame: statusData.frame };
+      setAbsData((prevSpeedData) => [...prevSpeedData, newSpeedDataPoint]);
+    }
+  }, [statusData]);
 
   return (
     <div>
@@ -36,10 +35,14 @@ const ABS: React.FC<AbsProps> = ({ isSelectedForHome, onToggleSelected }) => {
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
+      <div>
+        <div className='text-over-graph'>Anti-lock braking status</div>
+        <div className='number-over-graph'>{absData.length > 0 ? (absData[absData.length - 1].abs === 1 ? 'On' : 'Off') : 'N/A'}</div>
+      </div>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={absData}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis hide/>
+          <CartesianGrid strokeDasharray="3 3" vertical={false}/>
+          <XAxis hide dataKey="frame"/>
           <YAxis dataKey="abs"/>
           <Tooltip />
           <Line type="monotone" dataKey="abs" stroke="#8884d8" dot={false}/>

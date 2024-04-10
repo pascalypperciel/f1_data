@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { IconProp } from '@fortawesome/fontawesome-svg-core'
+import { faHome, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { useCarStatusData } from '../../websocket';
 
 interface PitLimiterProps {
   isSelectedForHome: boolean;
@@ -9,34 +11,25 @@ interface PitLimiterProps {
 
 const PitLimiter: React.FC<PitLimiterProps> = ({ isSelectedForHome, onToggleSelected }) => {
   const [pitLimiterData, setPitLimiterData] = useState<number | null>(null);
+  const statusData = useCarStatusData();
 
-  const pitLimiterMapping: { [key: number]: { name: string; } } = {
-    0: { name: "Off"},
-    1: { name: "On"}
+  const pitLimiterMapping: { [key: number]: { name: string, iconPit: IconProp } } = {
+    0: { name: "Off", iconPit: faTimes},
+    1: { name: "On", iconPit: faCheck}
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/car-status/pitlimiter');
-        const data = await response.json();
-        setPitLimiterData(data.pitlimiter);
-      } catch (error) {
-        console.error('Error fetching pitLimiter data:', error);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 500);
-    return () => clearInterval(interval);
-  }, []);
+    if (statusData) {
+      setPitLimiterData(statusData.pitLimiterStatus);
+    }
+  }, [statusData]);
 
   const getPitLimiterDetails = () => {
     const pitLimiterDetail = pitLimiterMapping[pitLimiterData ?? -1];
-    return pitLimiterDetail || { name: "Unknown"};
+    return pitLimiterDetail || { name: "Unknown", iconPit: faTimes};
   };
 
-  const { name } = getPitLimiterDetails();
+  const { name, iconPit } = getPitLimiterDetails();
 
   return (
     <div>
@@ -48,9 +41,10 @@ const PitLimiter: React.FC<PitLimiterProps> = ({ isSelectedForHome, onToggleSele
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>{name}</p>
-      </div>
+        <div>
+          <div className='text-over-graph'>Pit Limiter</div>
+          <div className='number-over-graph'>{name} <FontAwesomeIcon icon={iconPit} style={{ color: pitLimiterData ? 'green' : 'red' }} /></div>
+        </div>
     </div>
   );
 };

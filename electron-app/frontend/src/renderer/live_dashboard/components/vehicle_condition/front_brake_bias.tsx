@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { useCarStatusData } from '../../websocket';
 
 interface FrontBrakeBiasProps {
   isSelectedForHome: boolean;
@@ -8,23 +9,14 @@ interface FrontBrakeBiasProps {
 }
 
 const FrontBrakeBias: React.FC<FrontBrakeBiasProps> = ({ isSelectedForHome, onToggleSelected }) => {
-  const [fbbData, setFbbData] = useState(null);
+  const [fbbData, setFbbData] = useState<number | null>(null);
+  const statusData = useCarStatusData();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/car-status/front-brake-bias');
-        const data = await response.json();
-        setFbbData(data.frontbrakebias);
-      } catch (error) {
-        console.error('Error fetching front brake bias data:', error);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 1000);
-    return () => clearInterval(interval);
-  }, []);
+    if (statusData) {
+      setFbbData(statusData.frontBrakeBias);
+    }
+  }, [statusData]);
 
   return (
     <div>
@@ -36,8 +28,9 @@ const FrontBrakeBias: React.FC<FrontBrakeBiasProps> = ({ isSelectedForHome, onTo
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>{fbbData} %</p>
+      <div>
+        <div className='text-over-graph'>Front Brake Bias</div>
+        <div className='number-over-graph'>{fbbData} %</div>
       </div>
     </div>
   );

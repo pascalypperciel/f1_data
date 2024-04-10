@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { useLapData } from '../../websocket';
 
 interface PenaltiesProps {
   isSelectedForHome: boolean;
@@ -8,23 +9,14 @@ interface PenaltiesProps {
 }
 
 const Penalties: React.FC<PenaltiesProps> = ({ isSelectedForHome, onToggleSelected }) => {
-  const [penaltiesData, setPenaltiesData] = useState(null);
+  const [penaltiesData, setPenaltiesData] = useState<number | null>(null);
+  const lapData = useLapData();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/lap/penalties');
-        const data = await response.json();
-        setPenaltiesData(data.timepenalties);
-      } catch (error) {
-        console.error('Error fetching penalties data:', error);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 3000);
-    return () => clearInterval(interval);
-  }, []);
+    if (lapData) {
+      setPenaltiesData(lapData.penalties);
+    }
+  }, [lapData]);
 
   return (
     <div>
@@ -36,8 +28,11 @@ const Penalties: React.FC<PenaltiesProps> = ({ isSelectedForHome, onToggleSelect
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>Accumulated: {penaltiesData} seconds</p>
+      <div style={{display:'flex', justifyContent:'space-evenly'}}>
+        <div>
+          <div className='text-over-graph'>Accumulated Penalty Time</div>
+          <div className='number-over-graph'>{penaltiesData} seconds</div>
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { useCarStatusData } from '../../websocket';
 
 interface FuelProps {
   isSelectedForHome: boolean;
@@ -8,23 +9,19 @@ interface FuelProps {
 }
 
 const Fuel: React.FC<FuelProps> = ({ isSelectedForHome, onToggleSelected }) => {
-  const [fuelData, setFuelData] = useState<any[]>([]);
+  const [fuelData, setFuelData] = useState<number[]>([]);
+  const statusData = useCarStatusData();
+
+  const getFuelMixString = (value: number): string => {
+    const fuelMixMap = ['Lean', 'Standard', 'Rich', 'Max'];
+    return fuelMixMap[value] || 'unknown';
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/car-status/fuel');
-        const data = await response.json();
-        setFuelData([data.fuelintank, data.fuelcapacity, data.fuelremaininglaps]);
-      } catch (error) {
-        console.error('Error fetching fuel data:', error);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 1000);
-    return () => clearInterval(interval);
-  }, []);
+    if (statusData) {
+      setFuelData([ statusData.fuelInTank, statusData.fuelCapacity, statusData.fuelRemainingLaps, statusData.fuelMix]);
+    }
+  }, [statusData]);
 
   return (
     <div>
@@ -36,14 +33,27 @@ const Fuel: React.FC<FuelProps> = ({ isSelectedForHome, onToggleSelected }) => {
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>Fuel in Tank: {fuelData[0]} kg</p>
-      </div>
-      <div className="flex-container">
-        <p> Fuel Capacity: {fuelData[1]} kg</p>
-      </div>
-      <div className="flex-container">
-        <p>Laps Remaining: {fuelData[2]}</p>
+      <div style={{display:'flex', justifyContent:'space-evenly'}}>
+        <div>
+          <div>
+            <div className='car-setup-text'>Fuel in Tank</div>
+            <div className='car-setup-number'>{typeof fuelData[0] === 'number' ? fuelData[0].toFixed(2) : 'N/A'} kg</div>
+          </div>
+          <div>
+            <div className='car-setup-text'>Fuel Capacity</div>
+            <div className='car-setup-number'>{typeof fuelData[1] === 'number' ? fuelData[2].toFixed(2) : 'N/A'} kg</div>
+          </div>
+        </div>
+        <div>
+          <div>
+            <div className='car-setup-text'>Laps Remaining</div>
+            <div className='car-setup-number'>{typeof fuelData[2] === 'number' ? fuelData[2].toFixed(2) : 'N/A'}</div>
+          </div>
+          <div>
+            <div className='car-setup-text'>Fuel Mix</div>
+            <div className='car-setup-number'>{getFuelMixString(fuelData[3])}</div>
+          </div>
+        </div>
       </div>
     </div>
   );

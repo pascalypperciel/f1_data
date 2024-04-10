@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { useCarStatusData } from '../../websocket';
 
 interface TractionControlProps {
   isSelectedForHome: boolean;
@@ -9,6 +10,7 @@ interface TractionControlProps {
 
 const TractionControl: React.FC<TractionControlProps> = ({ isSelectedForHome, onToggleSelected }) => {
   const [tractionControlData, setTractionControlData] = useState<number | null>(null);
+  const statusData = useCarStatusData();
 
   const tractionControlMapping: { [key: number]: { name: string; } } = {
     0: { name: "Off"},
@@ -16,20 +18,10 @@ const TractionControl: React.FC<TractionControlProps> = ({ isSelectedForHome, on
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/car-status/tractioncontrol');
-        const data = await response.json();
-        setTractionControlData(data.tractioncontrol);
-      } catch (error) {
-        console.error('Error fetching traction control data:', error);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 500);
-    return () => clearInterval(interval);
-  }, []);
+    if (statusData) {
+      setTractionControlData(statusData.tractionControl);
+    }
+  }, [statusData]);
 
   const getTractionControlDetails = () => {
     const tractionControlDetail = tractionControlMapping[tractionControlData ?? -1];
@@ -48,8 +40,9 @@ const TractionControl: React.FC<TractionControlProps> = ({ isSelectedForHome, on
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>{name}</p>
+      <div>
+        <div className='text-over-graph'>Traction Control</div>
+        <div className='number-over-graph'>{name}</div>
       </div>
     </div>
   );

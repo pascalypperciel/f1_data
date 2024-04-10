@@ -69,11 +69,11 @@ interface TyreData {
   tyre_type: number;
 }
 
-interface TyreDataSet {
-  [index: number]: TyreData[];
+interface TyreStrategyProps {
+  darkMode: boolean;
 }
 
-const TyreStrategy: React.FC = () => {
+const TyreStrategy: React.FC<TyreStrategyProps> = ({ darkMode }) => {
   const [track, setTrack] = useState(trackOptions[0].value);
   const [trackImageUrl, setTrackImageUrl] = useState(trackOptions[0].imageUrl);
   const [stops, setStops] = useState(1);
@@ -198,7 +198,7 @@ const TyreStrategy: React.FC = () => {
             <img
               src={weatherIconUrl}
               alt="Weather"
-              className='weather-icon'
+              className={`weather-icon ${darkMode ? 'dark-mode' : ''}`}
               style={{ marginTop: '-20px' }} />
             <div className="bebas-neue-title">{weatherLabel}</div>
 

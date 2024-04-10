@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { useLapData } from '../../websocket';
 
 interface PitStatusProps {
   isSelectedForHome: boolean;
@@ -9,6 +10,7 @@ interface PitStatusProps {
 
 const PitStatus: React.FC<PitStatusProps> = ({ isSelectedForHome, onToggleSelected }) => {
   const [pitStatusModeData, setPitStatusModeData] = useState<number | null>(null);
+  const lapData = useLapData();
 
   const pitStatusModeMapping: { [key: number]: string } = {
     0: 'None',
@@ -16,21 +18,11 @@ const PitStatus: React.FC<PitStatusProps> = ({ isSelectedForHome, onToggleSelect
     2: 'In Pit Area'
 };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const resMode = await fetch('http://localhost:3001/api/lap/pit-status');
-        const dataMode = await resMode.json();
-        setPitStatusModeData(dataMode.pitstatus);
-      } catch (error) {
-        console.error('Error fetching pit status data:', error);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 1000);
-    return () => clearInterval(interval);
-  }, []);
+useEffect(() => {
+  if (lapData) {
+    setPitStatusModeData(lapData.pitStatus);
+  }
+}, [lapData]);
 
   const getPitStatusModeWord = (mode: number) => pitStatusModeMapping[mode] || 'N/A';
 
@@ -44,8 +36,11 @@ const PitStatus: React.FC<PitStatusProps> = ({ isSelectedForHome, onToggleSelect
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>{pitStatusModeData !== null ? getPitStatusModeWord(pitStatusModeData) : 'N/A'}</p>
+      <div style={{display:'flex', justifyContent:'space-evenly'}}>
+        <div>
+          <div className='text-over-graph'>Pit Status</div>
+          <div className='number-over-graph'>{pitStatusModeData !== null ? getPitStatusModeWord(pitStatusModeData) : 'N/A'}</div>
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { useSessionData } from '../../websocket';
 
 interface TemperatureProps {
   isSelectedForHome: boolean;
@@ -9,22 +10,16 @@ interface TemperatureProps {
 
 const Temperature: React.FC<TemperatureProps> = ({ isSelectedForHome, onToggleSelected }) => {
   const [temperatureData, setTemperatureData] = useState<any[]>([]);
+  const sessionData = useSessionData();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/session/temperature');
-        const data = await response.json();
-        setTemperatureData([data.tracktemp, data.airtemp]);
-      } catch (error) {
-        console.error('Error fetching temperature data:', error);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 2000);
-    return () => clearInterval(interval);
-  }, []);
+    if (sessionData) {
+      setTemperatureData([
+        sessionData.trackTemperature,
+        sessionData.airTemperature
+      ]);
+    }
+  }, [sessionData]);
 
   return (
     <div>
@@ -36,11 +31,15 @@ const Temperature: React.FC<TemperatureProps> = ({ isSelectedForHome, onToggleSe
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>Track: {temperatureData[0]}°C</p>
-      </div>
-      <div className="flex-container">
-        <p>Air: {temperatureData[1]}°C</p>
+      <div style={{display:'flex', justifyContent:'space-evenly'}}>
+        <div>
+          <div className='text-over-graph'>Track Temperature</div>
+          <div className='number-over-graph'>{typeof temperatureData[0] === 'number' ? temperatureData[0].toFixed(2) : 'N/A'}°C</div>
+        </div>
+        <div>
+          <div className='text-over-graph'>Air  Temperature</div>
+          <div className='number-over-graph'>{typeof temperatureData[1] === 'number' ? temperatureData[1].toFixed(2) : 'N/A'}°C</div>
+        </div>
       </div>
     </div>
   );

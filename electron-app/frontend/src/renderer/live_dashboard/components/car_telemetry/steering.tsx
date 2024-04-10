@@ -2,29 +2,28 @@ import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome} from '@fortawesome/free-solid-svg-icons';
+import { useCarTelemetryData } from '../../websocket';
 
 interface SteeringProps {
   isSelectedForHome: boolean;
   onToggleSelected: () => void;
 }
 
-const Steering: React.FC<SteeringProps> = ({ isSelectedForHome, onToggleSelected }) => {
-  const [sterringData, setSteeringData] = useState([]);
+interface SteeringDataPoint {
+  steering: number;
+  frame: number;
+}
 
-  const fetchData = () => {
-    fetch('http://localhost:3001/api/car-telemetry/steering')
-      .then(response => response.json())
-      .then(data => {
-        setSteeringData(data.reverse());
-      })
-      .catch(error => console.error('Error fetching steering data:', error));
-  };
+const Steering: React.FC<SteeringProps> = ({ isSelectedForHome, onToggleSelected }) => {
+  const [steeringData, setSteeringData] = useState<SteeringDataPoint[]>([]);
+  const carTelemetryData = useCarTelemetryData();
 
   useEffect(() => {
-    fetchData();
-    const interval = setInterval(fetchData, 1000); // Fetch data every 1 seconds
-    return () => clearInterval(interval);
-  }, []);
+    if (carTelemetryData) {
+      const newSteeringDataPoint = { steering: carTelemetryData.steer, frame: carTelemetryData.frame };
+      setSteeringData((prevSteeringData) => [...prevSteeringData, newSteeringDataPoint]);
+    }
+  }, [carTelemetryData]);
 
   return (
     <div>
@@ -36,10 +35,14 @@ const Steering: React.FC<SteeringProps> = ({ isSelectedForHome, onToggleSelected
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
+      <div>
+        <div className='text-over-graph'>Steering Direction</div>
+        <div className='number-over-graph'> {steeringData.length > 0 ? steeringData[steeringData.length - 1].steering.toFixed(2) : 'N/A'}</div>
+      </div>
       <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={sterringData}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis hide/>
+        <LineChart data={steeringData}>
+          <CartesianGrid strokeDasharray="3 3" vertical={false}/>
+          <XAxis hide dataKey="frame"/>
           <YAxis dataKey="steering"/>
           <Tooltip />
           <Line type="monotone" dataKey="steering" stroke="#8884d8" dot={false}/>

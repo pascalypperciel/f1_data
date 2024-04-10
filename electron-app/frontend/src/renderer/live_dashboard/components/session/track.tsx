@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { useSessionData } from '../../websocket';
 
 interface TrackProps {
   isSelectedForHome: boolean;
@@ -8,7 +9,8 @@ interface TrackProps {
 }
 
 const Track: React.FC<TrackProps> = ({ isSelectedForHome, onToggleSelected }) => {
-  const [trackData, setTrackData] = useState<any[]>([]);
+  const [trackData, setTrackData] = useState<number[]>([]);
+  const sessionData = useSessionData();
 
   const TrackMapping: { [key: number]: string } = {
     0: 'Melbourne',
@@ -39,23 +41,14 @@ const Track: React.FC<TrackProps> = ({ isSelectedForHome, onToggleSelected }) =>
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/session/track');
-        const data = await response.json();
-        setTrackData([data.totallaps, data.trackid, data.tracklength]);
-      } catch (error) {
-        console.error('Error fetching track data:', error);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
-
-  const getTrackWord = (mode: number) => TrackMapping[mode] || 'N/A';
+    if (sessionData) {
+      setTrackData([
+        sessionData.trackId,
+        sessionData.totalLaps,
+        sessionData.trackLength
+      ]);
+    }
+  }, [sessionData]);
 
   return (
     <div>
@@ -67,14 +60,19 @@ const Track: React.FC<TrackProps> = ({ isSelectedForHome, onToggleSelected }) =>
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>Name: {trackData[1] !== null ? getTrackWord(trackData[1]) : 'N/A'}</p>
-      </div>
-      <div className="flex-container">
-        <p>Total Laps: {trackData[0]}</p>
-      </div>
-      <div className="flex-container">
-        <p>Length: {trackData[2]}m</p>
+      <div style={{display:'flex', justifyContent:'space-evenly'}}>
+        <div>
+          <div className='text-over-graph'>Location</div>
+          <div className='number-over-graph'>{TrackMapping[trackData[0]]}</div>
+        </div>
+        <div>
+          <div className='text-over-graph'>Total Laps</div>
+          <div className='number-over-graph'>{trackData[1]}</div>
+        </div>
+        <div>
+          <div className='text-over-graph'>Length</div>
+          <div className='number-over-graph'>{trackData[2]}m</div>
+        </div>
       </div>
     </div>
   );

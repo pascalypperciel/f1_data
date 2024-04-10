@@ -14,7 +14,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Divider from "@mui/material/Divider";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const drawerWidth = 240;
+export const drawerWidth = 190;
 
 interface SidebarProps {
   open: boolean;
@@ -56,10 +56,6 @@ function Sidebar({ open, setOpen }: SidebarProps) {
         },
       }}
     >
-      <IconButton onClick={() => setOpen(!open)}>
-        {open ? <ChevronLeftIcon /> : <MenuIcon />}
-      </IconButton>
-      <Divider />
       <List>
         <List>
           <ListItemButton
@@ -91,6 +87,13 @@ function Sidebar({ open, setOpen }: SidebarProps) {
           </ListItemButton>
         </List>
       </List>
+      <Divider />
+      <IconButton
+        onClick={() => setOpen(!open)}
+        style={{ position: 'absolute', bottom: '0', right: '0' }}
+      >
+        {open ? <ChevronLeftIcon /> : <MenuIcon />}
+      </IconButton>
     </Drawer>
   );
 }

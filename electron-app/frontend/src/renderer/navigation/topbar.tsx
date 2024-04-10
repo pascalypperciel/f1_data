@@ -2,7 +2,14 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Tabs from '@mui/material/Tabs';
 import CustomTab from './custom_tab';
-import "./topbar.css";
+import { styled } from '@mui/material/styles';
+
+const StyledTopBar = styled('div')(({ theme }) => ({
+  position: 'sticky',
+  top: 0,
+  zIndex: 100,
+  backgroundColor: theme.palette.background.paper,
+}));
 
 interface TabData {
   label: string;
@@ -30,13 +37,13 @@ const TopBar: React.FC<TopBarProps> = ({ tabs }) => {
   const validValue = tabs.length > 0 ? Math.min(value, tabs.length - 1) : false;
 
   return (
-    <div className="topBar">
-      <Tabs value={validValue} onChange={handleChange} aria-label="navigation tabs">
+    <StyledTopBar >
+      <Tabs value={validValue} onChange={handleChange}>
         {tabs.map((tab, index) => (
-          <CustomTab key={index} label={tab.label} />
+          <CustomTab key={index} label={tab.label}/>
         ))}
       </Tabs>
-    </div>
+    </StyledTopBar>
   );
 }
 
