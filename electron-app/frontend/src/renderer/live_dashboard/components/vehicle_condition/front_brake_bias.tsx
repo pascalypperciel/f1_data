@@ -28,8 +28,9 @@ const FrontBrakeBias: React.FC<FrontBrakeBiasProps> = ({ isSelectedForHome, onTo
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>{fbbData} %</p>
+      <div>
+        <div className='text-over-graph'>Front Brake Bias</div>
+        <div className='number-over-graph'>{fbbData} %</div>
       </div>
     </div>
   );

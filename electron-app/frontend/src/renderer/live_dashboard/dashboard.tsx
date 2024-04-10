@@ -32,7 +32,7 @@ import Tyre from "./components/vehicle_condition/tyre";
 import CurrentPosition from "./components/lap/current_position";
 import Distance from "./components/lap/distance";
 import DriverStatus from "./components/lap/driver_status";
-import Lap from "./components/lap/times";
+import Lap from "./components/lap/lap";
 import Penalties from "./components/lap/penalties";
 import PitStatus from "./components/lap/pit_status";
 import Sector from "./components/lap/sector";
@@ -49,6 +49,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 
 function Dashboard() {
+  const [boxSize, setBoxSize] = useState();
 
   const [selectedForHome, setSelectedForHome] = useState(() => {
     const saved = localStorage.getItem("selectedForHome");
@@ -70,7 +71,8 @@ function Dashboard() {
   const homeGridStyle: React.CSSProperties = {
     display: 'grid',
     gridGap: '20px',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(700px, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(900px, 1fr))',
+    gridAutoRows: 'min-content',
     justifyContent: 'center'
   };
 
@@ -98,6 +100,7 @@ function Dashboard() {
     <div>
       <Routes>
         <Route path="home" element={
+
           <div style={homeGridStyle}>
             {isAnyComponentSelected() ? (
               <>
@@ -452,6 +455,12 @@ function Dashboard() {
                     onToggleSelected={() => toggleSelection('Lap')}
                   />
                 </Paper>
+                <Paper style={paperStyle}>
+                  <Penalties
+                    isSelectedForHome={selectedForHome['Penalties']}
+                    onToggleSelected={() => toggleSelection('Penalties')}
+                  />
+                </Paper>
               </div>
               <div style={columnStyle}>
                 <Paper style={paperStyle}>
@@ -476,12 +485,6 @@ function Dashboard() {
                   <Times
                     isSelectedForHome={selectedForHome['Times']}
                     onToggleSelected={() => toggleSelection('Times')}
-                  />
-                </Paper>
-                <Paper style={paperStyle}>
-                  <Penalties
-                    isSelectedForHome={selectedForHome['Penalties']}
-                    onToggleSelected={() => toggleSelection('Penalties')}
                   />
                 </Paper>
               </div>

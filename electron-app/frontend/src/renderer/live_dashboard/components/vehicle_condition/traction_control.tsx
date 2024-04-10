@@ -40,8 +40,9 @@ const TractionControl: React.FC<TractionControlProps> = ({ isSelectedForHome, on
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>{name}</p>
+      <div>
+        <div className='text-over-graph'>Traction Control</div>
+        <div className='number-over-graph'>{name}</div>
       </div>
     </div>
   );

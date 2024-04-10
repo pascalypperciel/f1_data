@@ -51,14 +51,19 @@ const SessionInfo: React.FC<SessionInfoProps> = ({ isSelectedForHome, onToggleSe
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>Type: {sessionInfoData[0] !== null ? getTypeWord(sessionInfoData[0]) : 'N/A'}</p>
-      </div>
-      <div className="flex-container">
-        <p>Duration: {sessionInfoData[1]} seconds</p>
-      </div>
-      <div className="flex-container">
-        <p>Time Left: {sessionInfoData[2]} seconds</p>
+      <div style={{display:'flex', justifyContent:'space-evenly'}}>
+        <div>
+          <div className='text-over-graph'>Session Type</div>
+          <div className='number-over-graph'>{sessionInfoData[0] !== null ? getTypeWord(sessionInfoData[0]) : 'N/A'}</div>
+        </div>
+        <div>
+          <div className='text-over-graph'>Duration</div>
+          <div className='number-over-graph'>{sessionInfoData[1]} seconds</div>
+        </div>
+        <div>
+          <div className='text-over-graph'>Time Left</div>
+          <div className='number-over-graph'>{sessionInfoData[2]} seconds</div>
+        </div>
       </div>
     </div>
   );

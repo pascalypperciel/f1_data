@@ -41,10 +41,10 @@ const PitLimiter: React.FC<PitLimiterProps> = ({ isSelectedForHome, onToggleSele
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>{name}</p>
-        <FontAwesomeIcon icon={iconPit} style={{ color: pitLimiterData ? 'green' : 'red' }} />
-      </div>
+        <div>
+          <div className='text-over-graph'>Pit Limiter</div>
+          <div className='number-over-graph'>{name} <FontAwesomeIcon icon={iconPit} style={{ color: pitLimiterData ? 'green' : 'red' }} /></div>
+        </div>
     </div>
   );
 };

@@ -34,20 +34,31 @@ const Times: React.FC<TimesProps> = ({ isSelectedForHome, onToggleSelected }) =>
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>Last Lap Time: {typeof timesData[0] === 'number' ? timesData[0].toFixed(2) : 'N/A'} seconds</p>
-      </div>
-      <div className="flex-container">
-        <p>Current Lap Time: {typeof timesData[1] === 'number' ? timesData[1].toFixed(2) : 'N/A'} seconds</p>
-      </div>
-      <div className="flex-container">
-        <p>Best Lap Time: {typeof timesData[2] === 'number' ? timesData[2].toFixed(2) : 'N/A'} seconds</p>
-      </div>
-      <div className="flex-container">
-        <p>Sector 1 Time: {typeof timesData[3] === 'number' ? timesData[3].toFixed(2) : 'N/A'} seconds</p>
-      </div>
-      <div className="flex-container">
-        <p>Sector 2 Time: {typeof timesData[4] === 'number' ? timesData[4].toFixed(2) : 'N/A'} seconds</p>
+      <div style={{display:'flex', justifyContent:'space-evenly'}}>
+        <div>
+          <div>
+            <div className='car-setup-text'>Last Lap Time</div>
+            <div className='car-setup-number'>{typeof timesData[0] === 'number' ? timesData[0].toFixed(2) : 'N/A'} seconds</div>
+          </div>
+          <div>
+            <div className='car-setup-text'>Current Lap Time</div>
+            <div className='car-setup-number'>{typeof timesData[1] === 'number' ? timesData[1].toFixed(2) : 'N/A'} seconds</div>
+          </div>
+          <div>
+            <div className='car-setup-text'>Best Lap Time</div>
+            <div className='car-setup-number'>{typeof timesData[2] === 'number' ? timesData[2].toFixed(2) : 'N/A'} seconds</div>
+          </div>
+        </div>
+        <div>
+          <div>
+            <div className='car-setup-text'>Sector 1 Time</div>
+            <div className='car-setup-number'>{typeof timesData[3] === 'number' ? timesData[3].toFixed(2) : 'N/A'} seconds</div>
+          </div>
+          <div>
+            <div className='car-setup-text'>Sector 2 Time</div>
+            <div className='car-setup-number'>{typeof timesData[4] === 'number' ? timesData[4].toFixed(2) : 'N/A'} seconds</div>
+          </div>
+        </div>
       </div>
     </div>
   );

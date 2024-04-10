@@ -35,6 +35,10 @@ const Steering: React.FC<SteeringProps> = ({ isSelectedForHome, onToggleSelected
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
+      <div>
+        <div className='text-over-graph'>Steering Direction</div>
+        <div className='number-over-graph'> {steeringData.length > 0 ? steeringData[steeringData.length - 1].steering.toFixed(2) : 'N/A'}</div>
+      </div>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={steeringData}>
           <CartesianGrid strokeDasharray="3 3" vertical={false}/>

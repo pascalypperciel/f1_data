@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCar, faCheck, faHome} from '@fortawesome/free-solid-svg-icons';
+import { faCar, faCheck, faHome, faTimes} from '@fortawesome/free-solid-svg-icons';
 import { useCarTelemetryData, useCarStatusData } from '../../websocket';
 import "../components.css";
 import "./drs.css";
@@ -21,7 +21,7 @@ const DRS: React.FC<DRSProps> = ({ isSelectedForHome, onToggleSelected }) => {
   );
 
   const drsAllowedIcon = () => (
-    <FontAwesomeIcon icon={faCheck} style={{ color: drsAllowed ? 'green' : 'red' }} />
+    <FontAwesomeIcon icon={drsAllowed ? faCheck : faTimes} style={{ color: drsAllowed ? 'green' : 'red' }} />
   );
 
   useEffect(() => {
@@ -48,13 +48,15 @@ const DRS: React.FC<DRSProps> = ({ isSelectedForHome, onToggleSelected }) => {
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>DRS Allowed: {drsAllowed === 1 ? 'Yes' : 'No'}</p>
-        {drsAllowedIcon()}
-      </div>
-      <div className="flex-container">
-        <p>DRS Enabled: {drsEnabled === 1 ? 'Yes' : 'No'}</p>
-        {drsEnabledIcon()}
+      <div style={{display:'flex', justifyContent:'space-evenly'}}>
+        <div>
+          <div className='bebas-neue-book'>DRS Allowed</div>
+          <div className='bebas-neue-bold'>{drsAllowed === 1 ? 'Yes' : 'No'} {drsAllowedIcon()}</div>
+        </div>
+        <div>
+          <div className='bebas-neue-book'>DRS Enabled</div>
+          <div className='bebas-neue-bold'>{drsEnabled === 1 ? 'Yes' : 'No'} {drsEnabledIcon()}</div>
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@font-face {
+  font-family: 'BebasNeueBook';
+  src: url('../../../../../assets/fonts/BebasNeue\ Book.otf') format('opentype');
+  font-style: normal;
+}
 
-/* Fonts */
+/* Non-Graph Components */
 .bebas-neue-bold {
   font-family: 'Bebas Neue', cursive;
   font-size: 80px;
@@ -8,6 +13,44 @@
   margin-top: -20px
 }
 
+.bebas-neue-book {
+  font-family: 'BebasNeueBook';
+  font-size: 50px;
+  text-align: center;
+  margin-top: -20px
+}
+
+/* Graph Components */
+.text-over-graph {
+  font-family: 'BebasNeueBook';
+  font-size: 20px;
+  text-align: center;
+  margin-top: -20px
+}
+
+.number-over-graph {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 35px;
+  text-align: center;
+  margin-top: -10px
+}
+
+/* Car Setup */
+.car-setup-text {
+  font-family: 'BebasNeueBook';
+  font-size: 20px;
+  text-align: center;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.car-setup-number {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 35px;
+  text-align: center;
+}
+
+/* Others */
 body {
   font-family: 'Roboto', sans-serif !important;
 }

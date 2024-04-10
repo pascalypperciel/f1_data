@@ -50,9 +50,6 @@ const Track: React.FC<TrackProps> = ({ isSelectedForHome, onToggleSelected }) =>
     }
   }, [sessionData]);
 
-
-  const getTrackWord = (mode: number) => TrackMapping[mode] || 'N/A';
-
   return (
     <div>
       <h3 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -63,14 +60,19 @@ const Track: React.FC<TrackProps> = ({ isSelectedForHome, onToggleSelected }) =>
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>Name: {trackData[0]}</p>
-      </div>
-      <div className="flex-container">
-        <p>Total Laps: {trackData[1]}</p>
-      </div>
-      <div className="flex-container">
-        <p>Length: {trackData[2]}m</p>
+      <div style={{display:'flex', justifyContent:'space-evenly'}}>
+        <div>
+          <div className='text-over-graph'>Location</div>
+          <div className='number-over-graph'>{TrackMapping[trackData[0]]}</div>
+        </div>
+        <div>
+          <div className='text-over-graph'>Total Laps</div>
+          <div className='number-over-graph'>{trackData[1]}</div>
+        </div>
+        <div>
+          <div className='text-over-graph'>Length</div>
+          <div className='number-over-graph'>{trackData[2]}m</div>
+        </div>
       </div>
     </div>
   );

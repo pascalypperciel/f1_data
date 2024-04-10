@@ -35,6 +35,10 @@ const Gear: React.FC<GearProps> = ({ isSelectedForHome, onToggleSelected }) => {
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
+      <div>
+        <div className='text-over-graph'>Gear Selected</div>
+        <div className='number-over-graph'> {gearData.length > 0 ? gearData[gearData.length - 1].gear : 'N/A'}</div>
+      </div>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={gearData}>
           <CartesianGrid strokeDasharray="3 3" vertical={false}/>

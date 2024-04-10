@@ -29,8 +29,8 @@ const CurrentPosition: React.FC<CurrentPositionProps> = ({ isSelectedForHome, on
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <div style={{ display: 'flex', height: '90px' }}> {/* Example height */}
+      <div style={{display:'flex', justifyContent:'space-evenly'}}>
+        <div style={{ display: 'flex', height: '90px' }}>
             <div className="bebas-neue-bold">{currentPositionData}</div>
             <div style={{ alignSelf: 'flex-end' }}>/20</div>
         </div>

@@ -35,6 +35,10 @@ const ABS: React.FC<AbsProps> = ({ isSelectedForHome, onToggleSelected }) => {
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
+      <div>
+        <div className='text-over-graph'>Anti-lock braking status</div>
+        <div className='number-over-graph'>{absData.length > 0 ? (absData[absData.length - 1].abs === 1 ? 'On' : 'Off') : 'N/A'}</div>
+      </div>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={absData}>
           <CartesianGrid strokeDasharray="3 3" vertical={false}/>

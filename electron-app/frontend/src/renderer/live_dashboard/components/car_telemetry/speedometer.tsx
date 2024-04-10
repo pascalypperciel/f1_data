@@ -67,7 +67,7 @@ const Speedometer: React.FC<SpeedometerProps> = ({ isSelectedForHome, onToggleSe
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <ResponsiveContainer width="100%" height={200}>
+      <ResponsiveContainer width="100%" height={300}>
         <RadialBarChart
           innerRadius="100%"
           outerRadius="60%"
@@ -81,24 +81,29 @@ const Speedometer: React.FC<SpeedometerProps> = ({ isSelectedForHome, onToggleSe
             tick={false}
           />
           <RadialBar
-            label={{ position: 'insideStart', fill: '#fff' }}
             background
             dataKey="value"
           />
         </RadialBarChart>
       </ResponsiveContainer>
 
-      <div style={{ textAlign: 'center'}}>
-        <p>Speed: {speedometerData?.speed} km/h</p>
-        <p>RPM: {speedometerData?.enginerpm}</p>
+      <div>
+        <div className='number-over-graph' style={{marginTop:'-180px'}}>{speedometerData?.speed}</div>
+        <div className='text-over-graph' style={{marginBottom:'90px'}}>KM/H</div>
+      </div>
+      <div style={{display:'flex', justifyContent:'space-evenly'}}>
+        <div>
+          <div className='text-over-graph'>RPM</div>
+          <div className='number-over-graph' style={{marginBottom:'-20px'}}>{speedometerData?.enginerpm}</div>
+        </div>
       </div>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
         {Array.from({ length: 10 }).map((_, index) => (
           <div
             key={index}
             style={{
-              width: '20px',
-              height: '20px',
+              width: '25px',
+              height: '25px',
               borderRadius: '50%',
               backgroundColor: getRevLightColor(index, activeRevLights),
               margin: '0 2px',

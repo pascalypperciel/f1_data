@@ -31,11 +31,15 @@ const Temperature: React.FC<TemperatureProps> = ({ isSelectedForHome, onToggleSe
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>Track: {typeof temperatureData[0] === 'number' ? temperatureData[0].toFixed(2) : 'N/A'}°C</p>
-      </div>
-      <div className="flex-container">
-        <p>Air: {typeof temperatureData[1] === 'number' ? temperatureData[1].toFixed(2) : 'N/A'}°C</p>
+      <div style={{display:'flex', justifyContent:'space-evenly'}}>
+        <div>
+          <div className='text-over-graph'>Track Temperature</div>
+          <div className='number-over-graph'>{typeof temperatureData[0] === 'number' ? temperatureData[0].toFixed(2) : 'N/A'}°C</div>
+        </div>
+        <div>
+          <div className='text-over-graph'>Air  Temperature</div>
+          <div className='number-over-graph'>{typeof temperatureData[1] === 'number' ? temperatureData[1].toFixed(2) : 'N/A'}°C</div>
+        </div>
       </div>
     </div>
   );

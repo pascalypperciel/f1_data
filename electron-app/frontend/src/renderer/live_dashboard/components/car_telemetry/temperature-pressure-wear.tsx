@@ -109,7 +109,7 @@ return (
         renderPressureBox(pressure, 8 + 60 * arrayOffsetY[index], 19 + 48 * arrayOffsetX[index], `pressure-${index}`))}
       {renderTempBox("Engine", temperatures.engineTemp, 31, 48, "engine-temp")}
       {tyreWear.tyreWear.map((wear, index) =>
-        renderWearBox(wear, 11+ 62 * arrayOffsetY[index], 23 + 48 * arrayOffsetX[index], `wear-${index}`))}
+        renderWearBox(wear, 11+ 60 * arrayOffsetY[index], 23 + 48 * arrayOffsetX[index], `wear-${index}`))}
     </div>
   </div>
 );

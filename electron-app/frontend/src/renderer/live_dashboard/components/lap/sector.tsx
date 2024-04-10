@@ -36,8 +36,10 @@ const Sector: React.FC<SectorProps> = ({ isSelectedForHome, onToggleSelected }) 
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>{sectorModeData !== null ? getSectorWord(sectorModeData) : 'N/A'}</p>
+      <div style={{display:'flex', justifyContent:'space-evenly'}}>
+        <div>
+          <div className='number-over-graph'>{sectorModeData !== null ? getSectorWord(sectorModeData) : 'N/A'}</div>
+        </div>
       </div>
     </div>
   );

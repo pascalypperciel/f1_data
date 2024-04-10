@@ -35,6 +35,10 @@ const Clutch: React.FC<ClutchProps> = ({ isSelectedForHome, onToggleSelected }) 
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
+      <div>
+        <div className='text-over-graph'>Amount of Clutch Applied</div>
+        <div className='number-over-graph'> {clutchData.length > 0 ? clutchData[clutchData.length - 1].clutch : 'N/A'}%</div>
+      </div>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={clutchData}>
           <CartesianGrid strokeDasharray="3 3" vertical={false}/>

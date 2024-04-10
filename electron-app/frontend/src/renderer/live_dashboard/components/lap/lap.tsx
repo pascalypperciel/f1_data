@@ -28,8 +28,11 @@ const Lap: React.FC<LapProps> = ({ isSelectedForHome, onToggleSelected }) => {
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>Current Lap: {lapData}</p>
+      <div style={{display:'flex', justifyContent:'space-evenly'}}>
+        <div>
+          <div className='text-over-graph'>Current Lap</div>
+          <div className='number-over-graph'>{lapData}</div>
+        </div>
       </div>
     </div>
   );

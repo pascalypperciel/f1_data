@@ -43,9 +43,8 @@ const Flags: React.FC<FlagsProps> = ({ isSelectedForHome, onToggleSelected }) =>
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>{name}</p>
-        <FontAwesomeIcon icon={faFlag} style={{ color }} />
+      <div>
+        <div className='number-over-graph'>{name} <FontAwesomeIcon icon={faFlag} style={{ color }} /></div>
       </div>
     </div>
   );

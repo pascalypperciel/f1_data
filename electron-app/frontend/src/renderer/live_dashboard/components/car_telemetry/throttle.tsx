@@ -35,6 +35,10 @@ const Throttle: React.FC<ThrottleProps> = ({ isSelectedForHome, onToggleSelected
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
+      <div>
+        <div className='text-over-graph'>Throttle Pedal Pressure</div>
+        <div className='number-over-graph'> {throttleData.length > 0 ? throttleData[throttleData.length - 1].throttle * 100 : 'N/A'}%</div>
+      </div>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={throttleData}>
           <CartesianGrid strokeDasharray="3 3" vertical={false}/>

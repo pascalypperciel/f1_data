@@ -36,8 +36,11 @@ const SafetyCar: React.FC<SafetyCarProps> = ({ isSelectedForHome, onToggleSelect
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>{safetyCarModeData !== null ? getSafetyCarWord(safetyCarModeData) : 'N/A'}</p>
+      <div style={{display:'flex', justifyContent:'space-evenly'}}>
+        <div>
+          <div className='text-over-graph'>Safety Car Status</div>
+          <div className='number-over-graph'>{safetyCarModeData !== null ? getSafetyCarWord(safetyCarModeData) : 'N/A'}</div>
+        </div>
       </div>
     </div>
   );

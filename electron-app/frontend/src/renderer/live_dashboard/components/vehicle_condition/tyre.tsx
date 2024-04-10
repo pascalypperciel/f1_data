@@ -18,6 +18,17 @@ const tyreImages = {
   8: Wet
 };
 
+const compoundMapping: { [key: number]: number } = {
+  16: 5,
+  17: 4,
+  18: 3,
+  19: 2,
+  20: 1,
+  21: 0,
+  7: 6,
+  8: 7,
+};
+
 interface TyresProps {
   isSelectedForHome: boolean;
   onToggleSelected: () => void;
@@ -35,7 +46,8 @@ const Tyres: React.FC<TyresProps> = ({ isSelectedForHome, onToggleSelected }) =>
     }
   }, [statusData]);
 
-  const tyreCompoundNames = [" C0 ", " C1 ", " C2 ", " C3 ", " C4 ", " C5 "];
+  const tyreCompoundNames = [" C0 ", " C1 ", " C2 ", " C3 ", " C4 ", " C5 ", " I ", " W "];
+  const highlightIndex = compoundMapping[actualTyreCompound ?? -1];
 
   return (
     <div>
@@ -51,9 +63,15 @@ const Tyres: React.FC<TyresProps> = ({ isSelectedForHome, onToggleSelected }) =>
         {tyreVisualCompound !== null && (
           <img src={tyreImages[tyreVisualCompound as keyof typeof tyreImages]} alt="Tyre" style={{ maxWidth: '100%' }} />
         )}
-        <div style={{ marginTop: '10px', fontWeight: 'bold', fontSize: '1.2em' }}>
+        <div className='car-setup-number'>
           {tyreCompoundNames.map((compound, index) => (
-            <span key={compound} style={{ color: actualTyreCompound === index + 16 ? 'blue' : 'grey', marginRight: '5px' }}>
+            <span
+              key={compound}
+              style={{
+                color: index === highlightIndex ? 'blue' : (highlightIndex === undefined ? 'defaultColor' : 'grey'),
+                marginRight: '5px',
+              }}
+            >
               {compound}
             </span>
           ))}

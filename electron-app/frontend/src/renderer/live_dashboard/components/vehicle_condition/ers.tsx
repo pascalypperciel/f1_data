@@ -48,8 +48,15 @@ const ERS: React.FC<ERSProps> = ({ isSelectedForHome, onToggleSelected }) => {
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>Deploy Mode: {ersModeData !== null ? getErsModeWord(ersModeData) : 'N/A'}</p>
+      <div style={{display:'flex', justifyContent:'space-evenly'}}>
+        <div>
+          <div className='text-over-graph'>Deploy Mode</div>
+          <div className='number-over-graph'>{ersModeData !== null ? getErsModeWord(ersModeData) : 'N/A'}</div>
+        </div>
+        <div>
+          <div className='text-over-graph'>ERS Energy Store</div>
+          <div className='number-over-graph'>{ersStoreData.length > 0 ? ersStoreData[ersStoreData.length - 1].ersstoreenergy : 'N/A'} Joules</div>
+        </div>
       </div>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={ersStoreData}>

@@ -38,8 +38,11 @@ const DriverStatus: React.FC<DriverStatusProps> = ({ isSelectedForHome, onToggle
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>{driverStatusModeData !== null ? getDriverStatusModeWord(driverStatusModeData) : 'N/A'}</p>
+      <div style={{display:'flex', justifyContent:'space-evenly'}}>
+        <div>
+          <div className='text-over-graph'>Driver Status</div>
+          <div className='number-over-graph'>{driverStatusModeData !== null ? getDriverStatusModeWord(driverStatusModeData) : 'N/A'}</div>
+        </div>
       </div>
     </div>
   );

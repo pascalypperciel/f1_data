@@ -28,11 +28,15 @@ const Distance: React.FC<DistanceProps> = ({ isSelectedForHome, onToggleSelected
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>Current Lap Distance: {typeof distanceData[0] === 'number' ? distanceData[0].toFixed(2) : 'N/A'}m</p>
-      </div>
-      <div className="flex-container">
-        <p>Total Distance: {typeof distanceData[1] === 'number' ? distanceData[1].toFixed(2) : 'N/A'}m</p>
+      <div style={{display:'flex', justifyContent:'space-evenly'}}>
+        <div>
+          <div className='text-over-graph'>Current Lap Distance</div>
+          <div className='number-over-graph'>{typeof distanceData[0] === 'number' ? distanceData[0].toFixed(2) : 'N/A'}m</div>
+        </div>
+        <div>
+          <div className='text-over-graph'>Total Distance</div>
+          <div className='number-over-graph'>{typeof distanceData[1] === 'number' ? distanceData[1].toFixed(2) : 'N/A'}m</div>
+        </div>
       </div>
     </div>
   );

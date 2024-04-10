@@ -35,6 +35,10 @@ const Speed: React.FC<SpeedProps> = ({ isSelectedForHome, onToggleSelected }) =>
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
+      <div>
+        <div className='text-over-graph'>Current Speed</div>
+        <div className='number-over-graph'> {speedData.length > 0 ? speedData[speedData.length - 1].speed : 'N/A'}KM/H</div>
+      </div>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={speedData}>
           <CartesianGrid strokeDasharray="3 3" vertical={false}/>

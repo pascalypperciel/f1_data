@@ -21,15 +21,18 @@ const StartingPosition: React.FC<StartingPositionProps> = ({ isSelectedForHome, 
   return (
     <div>
       <h3 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span>Grid Position</span>
+        <span>Starting Position</span>
         <FontAwesomeIcon
           icon={faHome}
           onClick={onToggleSelected}
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>{startingPositionData}</p>
+      <div style={{display:'flex', justifyContent:'space-evenly'}}>
+        <div style={{ display: 'flex', height: '90px' }}>
+            <div className="bebas-neue-bold">{startingPositionData}</div>
+            <div style={{ alignSelf: 'flex-end' }}>/20</div>
+        </div>
       </div>
     </div>
   );

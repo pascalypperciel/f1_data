@@ -35,6 +35,10 @@ const Brake: React.FC<BrakeProps> = ({ isSelectedForHome, onToggleSelected }) =>
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
+      <div>
+        <div className='text-over-graph'>Brake Pedal Pressure</div>
+        <div className='number-over-graph'> {brakeData.length > 0 ? brakeData[brakeData.length - 1].brake * 100 : 'N/A'}%</div>
+      </div>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={brakeData}>
           <CartesianGrid strokeDasharray="3 3" vertical={false}/>

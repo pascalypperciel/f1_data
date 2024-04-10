@@ -28,8 +28,11 @@ const Penalties: React.FC<PenaltiesProps> = ({ isSelectedForHome, onToggleSelect
           style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
         />
       </h3>
-      <div className="flex-container">
-        <p>Accumulated: {penaltiesData} seconds</p>
+      <div style={{display:'flex', justifyContent:'space-evenly'}}>
+        <div>
+          <div className='text-over-graph'>Accumulated Penalty Time</div>
+          <div className='number-over-graph'>{penaltiesData} seconds</div>
+        </div>
       </div>
     </div>
   );
