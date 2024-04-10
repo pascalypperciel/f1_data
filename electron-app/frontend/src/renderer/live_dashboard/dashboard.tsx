@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import { Paper } from "@mui/material";
+import { Paper, Slider } from "@mui/material";
 import "./dashboard.css"
 
 // Car Telemetry
@@ -49,7 +49,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 
 function Dashboard() {
-  const [boxSize, setBoxSize] = useState();
+  const [boxSize, setBoxSize] = useState(() => {
+    const savedBoxSize = localStorage.getItem('boxSize');
+    return savedBoxSize ? parseInt(savedBoxSize, 10) : 300;
+  });
+
+  useEffect(() => {
+    if (boxSize !== undefined) {
+      window.localStorage.setItem('boxSize', boxSize.toString());
+    }
+  }, [boxSize]);
 
   const [selectedForHome, setSelectedForHome] = useState(() => {
     const saved = localStorage.getItem("selectedForHome");
@@ -68,10 +77,20 @@ function Dashboard() {
     return Object.values(selectedForHome).some(value => value);
   };
 
+  const handleSliderChange = (event: Event, value: number | number[]) => {
+    if (typeof value === 'number') {
+      if (value !== 700) {
+        setBoxSize(value);
+      } else {
+        setBoxSize(900);
+      }
+    }
+  };
+
   const homeGridStyle: React.CSSProperties = {
     display: 'grid',
     gridGap: '20px',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(900px, 1fr))',
+    gridTemplateColumns: `repeat(auto-fit, minmax(${boxSize}px, 1fr))`,
     gridAutoRows: 'min-content',
     justifyContent: 'center'
   };
@@ -96,12 +115,40 @@ function Dashboard() {
     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
   };
 
+  const sliderContainerStyle: React.CSSProperties = {
+    gridColumn: '1 / -1',
+    display:'flex',
+    alignItems: 'center',
+    justifyContent: 'right'
+  };
+
+  const sliderStyle: React.CSSProperties = {
+    width: '30%',
+    maxWidth: '300px',
+    margin: '20px',
+  };
+
   return (
     <div>
       <Routes>
         <Route path="home" element={
-
           <div style={homeGridStyle}>
+          {/* Slider */}
+          <div style={sliderContainerStyle}>
+          <div className="bebas-neue-slider">Component Size: </div>
+            <Slider
+              size="small"
+              style={sliderStyle}
+              defaultValue={boxSize}
+              value={boxSize}
+              step={100}
+              min={300}
+              max={700}
+              onChange={handleSliderChange}
+            />
+          </div>
+
+            {/* Selected Components */}
             {isAnyComponentSelected() ? (
               <>
               {/* Car Telemetry */}

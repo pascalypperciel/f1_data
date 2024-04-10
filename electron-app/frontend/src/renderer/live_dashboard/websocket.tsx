@@ -77,7 +77,6 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             break;
           case "carTelemetry":
             setCarTelemetryData(receivedData.content as CarTelemetryData);
-            console.log("Received carTelemetry packet:", receivedData.content);
             break;
           case "carStatus":
             setCarStatusData(receivedData.content as CarStatusData);
