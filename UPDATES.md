@@ -62,4 +62,4 @@ The initial version of the data ingestion structure may seem inefficient, but I 
 Another thing that I worked on was many UI improvements. I introduced a dark mode, it is now possible to modify the component size in the home tab of the dashboard, and many more aesthetic improvements.
 
 Here is a quick showcase of the new look of the dashboard and the different improvements I have made:
-![ui showcase](images/[ui_showcase.gif)
+![ui_showcase](images/ui_showcase.gif)
