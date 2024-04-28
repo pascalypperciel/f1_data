@@ -50,3 +50,16 @@ Three models have been made to make this possible:
 
 All of these models are used iteratively to simulate entire races. 
 ![tyre_strategy_demo](images/tyre_strategy_1.gif)
+
+## Development: Real-time Data Ingestion Modification and UI Enhancements
+##### _April 10, 2024_
+In the past couple of weeks, I have changed the way I ingest data into my app. As shown in the diagram below, the data was ingested by a Python server on a Raspberry Pi, sent to a database on a Docker container, and then was queried over with a GET request. I decided to cut out the middleman so that users don't have to create a database to use my app. I opted for a Python **WebSocket** server that would directly send the data to the **React Front-end**, saving only the necessary data.
+
+![new diagram](images/diagram_3.jpg)
+
+The initial version of the data ingestion structure may seem inefficient, but I needed to be able to store data to build the machine learning models for the analysis tab. Now that I have a satisfactory amount of data, the new structure with the WebSocket server/client offers a much simpler, and more efficient way to ingest the data into my app. The data is now displayed instantly, with great precision.
+
+Another thing that I worked on was many UI improvements. I introduced a dark mode, it is now possible to modify the component size in the home tab of the dashboard, and many more aesthetic improvements.
+
+Here is a quick showcase of the new look of the dashboard and the different improvements I have made:
+![ui showcase](images/[ui_showcase.gif)
