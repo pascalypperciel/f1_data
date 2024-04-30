@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, FormControl, TextField, FormControlLabel } from '@mui/material';
+import { Switch, FormControl, TextField, FormControlLabel, Button } from '@mui/material';
 import './settings.css';
 
 const Database = () => {
@@ -25,6 +25,8 @@ const Database = () => {
     JSON.parse(localStorage.getItem('credentials') || JSON.stringify(defaultCredentials))
   );
 
+  const [isConnected, setIsConnected] = useState<boolean>(false);
+
   useEffect(() => {
     localStorage.setItem('isChecked', JSON.stringify(isChecked));
     localStorage.setItem('credentials', JSON.stringify(credentials));
@@ -32,6 +34,26 @@ const Database = () => {
 
   const handleCredentialChange = (name: keyof typeof credentials, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setCredentials(prev => ({ ...prev, [name]: (event.target as HTMLInputElement).value }));
+  };
+
+  const connectToDatabase = async () => {
+    if (!isConnected) {
+      const response = await fetch('http://localhost:5001/api/connect', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials)
+      });
+      if (response.ok) {
+        setIsConnected(true);
+      } else {
+        const data = await response.json();
+        alert(data.message);
+      }
+    } else {
+      setIsConnected(false);
+    }
   };
 
   return (
@@ -42,12 +64,11 @@ const Database = () => {
           label="Send Data to Database:"
           labelPlacement="start"
         />
-        <h4>Database Credentials</h4>
         <TextField
           type="text"
           label="Database Name"
           margin="dense"
-          disabled={!isChecked}
+          disabled={!isChecked || isConnected}
           value={credentials.databaseName}
           onChange={(e) => handleCredentialChange('databaseName', e)}
         />
@@ -55,15 +76,15 @@ const Database = () => {
           type="text"
           label="Username"
           margin="dense"
-          disabled={!isChecked}
+          disabled={!isChecked || isConnected}
           value={credentials.username}
           onChange={(e) => handleCredentialChange('username', e)}
         />
         <TextField
-          type="text"
+          type="password"
           label="Password"
           margin="dense"
-          disabled={!isChecked}
+          disabled={!isChecked || isConnected}
           value={credentials.password}
           onChange={(e) => handleCredentialChange('password', e)}
         />
@@ -71,7 +92,7 @@ const Database = () => {
           type="text"
           label="Host"
           margin="dense"
-          disabled={!isChecked}
+          disabled={!isChecked || isConnected}
           value={credentials.host}
           onChange={(e) => handleCredentialChange('host', e)}
         />
@@ -79,10 +100,18 @@ const Database = () => {
           type="text"
           label="Port"
           margin="dense"
-          disabled={!isChecked}
+          disabled={!isChecked || isConnected}
           value={credentials.port}
           onChange={(e) => handleCredentialChange('port', e)}
         />
+        <Button
+          variant="contained"
+          color={isConnected ? "success" : "primary"}
+          onClick={connectToDatabase}
+          disabled={!isChecked}
+        >
+          {isConnected ? "Connected" : "Connect"}
+        </Button>
       </FormControl>
     </div>
   );
