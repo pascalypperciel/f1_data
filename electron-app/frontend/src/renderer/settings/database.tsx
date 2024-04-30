@@ -52,7 +52,19 @@ const Database = () => {
         alert(data.message);
       }
     } else {
-      setIsConnected(false);
+      const response = await fetch('http://localhost:5001/api/disconnect', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials)
+      });
+      if (response.ok) {
+        setIsConnected(false);
+      } else {
+        const data = await response.json();
+        alert(data.message);
+      }
     }
   };
 

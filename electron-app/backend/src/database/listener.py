@@ -1,8 +1,10 @@
+from asyncio import Event
 import socket
 import f1_2019_struct
 
 UDP_IP = "0.0.0.0"
 UDP_PORT = 20777
+stop_event = Event()
 
 
 def get_telemetry():
@@ -40,3 +42,10 @@ def get_telemetry():
         print("\nUDP listener is shutting down")
     finally:
         sock.close()
+
+def start_listening_packets():
+    stop_event.clear()
+    get_telemetry()
+
+def stop_listening_packets():
+    stop_event.set()
