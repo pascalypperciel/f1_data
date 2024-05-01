@@ -1,39 +1,9 @@
 import psycopg2
 import datetime
 
-class DatabaseConnection:
-    def __init__(self, dbname, user, password, host, port):
-        self.db_connection = {
-            "dbname": dbname,
-            "user": user,
-            "password": password,
-            "host": host,
-            "port": port
-        }
-        self.conn = None
-
-    def connect(self):
-        try:
-            self.conn = psycopg2.connect(**self.db_connection)
-            print("Database connection established")
-            return True
-        except Exception as e:
-            print("Error connecting to database:", e)
-            self.conn = None
-            return False
-
-    def close(self):
-        if self.conn:
-            self.conn.close()
-
-db_conn = DatabaseConnection()
-
-def insert_session_data(packet, header):
-    if db_conn.conn is None:
-        return
-
+def insert_session_data(packet, header, connection):
     try:
-        with db_conn.conn.cursor() as cursor:
+        with connection.conn.cursor() as cursor:
             insert_query = """
             INSERT INTO session
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
@@ -58,17 +28,16 @@ def insert_session_data(packet, header):
                     packet.m_safetyCarStatus
                 )
             )
-            db_conn.conn.commit()
+            connection.conn.commit()
     except Exception as e:
         print("Error inserting session data:", e)
 
-
-def insert_lap_data(packet, header):
-    if db_conn.conn is None:
+def insert_lap_data(packet, header, connection):
+    if connection.conn is None:
         return
 
     try:
-        with db_conn.conn.cursor() as cursor:
+        with connection.conn.cursor() as cursor:
             for index, lap in enumerate(packet.m_lapsData):
                 insert_query = """
                 INSERT INTO lap
@@ -101,17 +70,16 @@ def insert_lap_data(packet, header):
                         lap.m_resultStatus
                     )
                 )
-                db_conn.conn.commit()
+                connection.conn.commit()
     except Exception as e:
         print("Error inserting lap data:", e)
 
-
-def insert_participant_data(packet, header):
-    if db_conn.conn is None:
+def insert_participant_data(packet, header, connection):
+    if connection.conn is None:
         return
 
     try:
-        with db_conn.conn.cursor() as cursor:
+        with connection.conn.cursor() as cursor:
             for index, participant in enumerate(packet.m_participants):
                 insert_query = """
                 INSERT INTO participant
@@ -134,17 +102,16 @@ def insert_participant_data(packet, header):
                         participant.m_name.decode("utf-8")
                     )
                 )
-                db_conn.conn.commit()
+                connection.conn.commit()
     except Exception as e:
         print("Error inserting participant data:", e)
 
-
-def insert_car_telemetry_data(packet, header):
-    if db_conn.conn is None:
+def insert_car_telemetry_data(packet, header, connection):
+    if connection.conn is None:
         return
 
     try:
-        with db_conn.conn.cursor() as cursor:
+        with connection.conn.cursor() as cursor:
             for index, ct in enumerate(packet.m_carTelemetryData):
                 insert_query = """
                 INSERT INTO cartelemetry
@@ -191,17 +158,16 @@ def insert_car_telemetry_data(packet, header):
                         ct.m_surfaceType[3]
                     )
                 )
-                db_conn.conn.commit()
+                connection.conn.commit()
     except Exception as e:
         print("Error inserting car telemetry data:", e)
 
-
-def insert_car_status_data(packet, header):
-    if db_conn.conn is None:
+def insert_car_status_data(packet, header, connection):
+    if connection.conn is None:
         return
 
     try:
-        with db_conn.conn.cursor() as cursor:
+        with connection.conn.cursor() as cursor:
             for index, cs in enumerate(packet.m_carStatusData):
                 insert_query = """
                 INSERT INTO carstatus
@@ -251,16 +217,16 @@ def insert_car_status_data(packet, header):
                         cs.m_ersDeployedThisLap
                     )
                 )
-                db_conn.conn.commit()
+                connection.conn.commit()
     except Exception as e:
         print("Error inserting car status data:", e)
 
-def insert_car_setup_data(packet, header):
-    if db_conn.conn is None:
+def insert_car_setup_data(packet, header, connection):
+    if connection.conn is None:
         return
 
     try:
-        with db_conn.conn.cursor() as cursor:
+        with connection.conn.cursor() as cursor:
             for index, cs in enumerate(packet.m_carSetups):
                 insert_query = """
                 INSERT INTO carsetup
@@ -297,6 +263,6 @@ def insert_car_setup_data(packet, header):
                         cs.m_fuelLoad
                     )
                 )
-                db_conn.conn.commit()
+                connection.conn.commit()
     except Exception as e:
         print("Error inserting car setup data:", e)

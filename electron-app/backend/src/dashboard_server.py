@@ -3,11 +3,14 @@ import socket
 import json
 import websockets
 from packet_struct import *
+from analytics.flask_server import process_packet
 
 def parse_packet(packet_data):
     header = Header.from_buffer_copy(packet_data)
     packet_id = header.m_packetId
     player_car_index = header.m_playerCarIndex
+
+    process_packet(packet_data, packet_id, header)
 
     parsed_data = {"type": None, "content": {}}
 

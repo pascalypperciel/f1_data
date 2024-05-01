@@ -1,8 +1,10 @@
-from threading import Thread
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import psycopg2
 from functions.tyre_strategy import find_best_strategy
+import socket
+import f1_2019_struct
+import db_handler
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:4343"}})
@@ -34,18 +36,11 @@ def connect():
         return jsonify({'message': 'Connection failed', 'status': False}), 400
 
 @app.route('/api/disconnect', methods=['POST'])
-def stop_listening():
-    # global listener_thread
+def disconnect():
     global connection
     connection.close()
-    # if listener_thread is not None:
-    #     stop_listening()
-    #     listener_thread.join()
-    #     listener_thread = None
-    #     return jsonify({'message': 'Listening stopped'}), 200
-    # else:
-    #     return jsonify({'message': 'Not listening'}), 200
-    return jsonify({'message': 'Listening stopped'}), 200
+    connection = None
+    return jsonify({'message': 'Connection successful', 'status': True})
 
 # Helpers
 def create_connection(credentials):
@@ -63,14 +58,24 @@ def create_connection(credentials):
         print(f"Connection failed: {e}")
         return False
 
-def start_listening():
-  global listener_thread
-  if listener_thread is None or not listener_thread.is_alive():
-      listener_thread = Thread(target=start_listening)
-      listener_thread.start()
-      return jsonify({'message': 'Listening started'}), 200
-  else:
-      return jsonify({'message': 'Already listening'}), 200
+def process_packet(packet, packetId, header):
+    global connection
+    if(connection == None):
+        return None
+    if packetId == -1:
+        pass
+    elif packetId == 1:
+        db_handler.insert_session_data(packet, header, connection)
+    elif packetId == 2:
+        db_handler.insert_lap_data(packet, header, connection)
+    elif packetId == 4:
+        db_handler.insert_participant_data(packet, header, connection)
+    elif packetId == 5:
+        db_handler.insert_car_setup_data(packet, header, connection)
+    elif packetId == 6:
+        db_handler.insert_car_telemetry_data(packet, header, connection)
+    elif packetId == 7:
+        db_handler.insert_car_status_data(packet, header, connection)
 
 if __name__ == '__main__':
     app.run(debug=True)
