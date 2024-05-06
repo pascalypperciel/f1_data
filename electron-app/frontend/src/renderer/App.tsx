@@ -53,7 +53,7 @@ function App() {
 
   const settingsTabs = [
     { label: "General", route: "/settings/general" },
-    { label: "Connections", route: "/settings/connections" },
+    { label: "Database", route: "/settings/database" },
   ];
 
   return (
