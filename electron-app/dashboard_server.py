@@ -2,8 +2,8 @@ import asyncio
 import socket
 import json
 import websockets
-from packet_struct import *
 from analytics.flask_server import process_packet
+from backend.src.packet_struct import *
 
 def parse_packet(packet_data):
     header = Header.from_buffer_copy(packet_data)

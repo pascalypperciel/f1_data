@@ -1,10 +1,9 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import psycopg2
-from functions.tyre_strategy import find_best_strategy
-import socket
-import f1_2019_struct
-import db_handler
+from .functions.tyre_strategy import find_best_strategy
+from .functions.lap_time import simulate_lap
+from .db_handler import insert_session_data, insert_car_setup_data, insert_car_telemetry_data, insert_car_status_data, insert_lap_data, insert_participant_data
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:4343"}})
@@ -25,6 +24,22 @@ def simulate():
         "best_time": best_time,
         "best_laps": best_laps,
         "best_tyres": best_tyres
+    })
+
+@app.route('/api/simulate-lap-time', methods=['GET'])
+def simulate_lap_time():
+    track = int(request.args.get('track'))
+    fuelintank = int(request.args.get('fuelintank'))
+    weather = int(request.args.get('weather'))
+    trackTemp = int(request.args.get('trackTemp'))
+    airTemp = int(request.args.get('airTemp'))
+    tyreWear = int(request.args.get('tyreWear'))
+    tyreCompound = int(request.args.get('tyreCompound'))
+
+    lap_time = simulate_lap(fuelintank, track, weather, airTemp, trackTemp, tyreWear, tyreCompound)
+
+    return jsonify({
+        "lap_time": lap_time,
     })
 
 @app.route('/api/connect', methods=['POST'])
@@ -65,20 +80,17 @@ def process_packet(packet, packetId, header):
     if packetId == -1:
         pass
     elif packetId == 1:
-        db_handler.insert_session_data(packet, header, connection)
+        insert_session_data(packet, header, connection)
     elif packetId == 2:
-        db_handler.insert_lap_data(packet, header, connection)
+        insert_lap_data(packet, header, connection)
     elif packetId == 4:
-        db_handler.insert_participant_data(packet, header, connection)
+        insert_participant_data(packet, header, connection)
     elif packetId == 5:
-        db_handler.insert_car_setup_data(packet, header, connection)
+        insert_car_setup_data(packet, header, connection)
     elif packetId == 6:
-        db_handler.insert_car_telemetry_data(packet, header, connection)
+        insert_car_telemetry_data(packet, header, connection)
     elif packetId == 7:
-        db_handler.insert_car_status_data(packet, header, connection)
-
-if __name__ == '__main__':
-    app.run(debug=True)
+        insert_car_status_data(packet, header, connection)
 
 if __name__ == '__main__':
     app.run(debug=True)

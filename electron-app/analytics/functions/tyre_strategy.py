@@ -1,14 +1,20 @@
 from itertools import combinations, product
 from joblib import load
-from catboost import CatBoostRegressor
 from concurrent.futures import ProcessPoolExecutor
 import pandas
-from values import *
+from analytics.values import *
+import os
 
 #loading models
-model_fuel_left = load('linear_regression_fuel_left_predictor.joblib')
-model_lap_time = load('linear_regression_lap_time_predictor3.joblib')
-model_tyre_wear = load('linear_regression_tyre_wear_predictor6.joblib')
+script_dir = os.path.dirname(__file__)
+
+model_fuel_left_path = os.path.join(script_dir, 'linear_regression_fuel_left_predictor.joblib')
+model_lap_time_path = os.path.join(script_dir, 'linear_regression_lap_time_predictor3.joblib')
+model_tyre_wear_path = os.path.join(script_dir, 'linear_regression_tyre_wear_predictor6.joblib')
+
+model_fuel_left = load(model_fuel_left_path)
+model_lap_time = load(model_lap_time_path)
+model_tyre_wear = load(model_tyre_wear_path)
 
 def generate_multi_stop_strategies(tyre_compounds, max_stops, pit_window_start, pit_window_end):
     strategies = []
