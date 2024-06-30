@@ -3,6 +3,7 @@ from flask_cors import CORS
 import psycopg2
 from .functions.tyre_strategy import find_best_strategy
 from .functions.lap_time import simulate_lap
+from .functions.tyre_wear import simulate_tyre
 from .db_handler import insert_session_data, insert_car_setup_data, insert_car_telemetry_data, insert_car_status_data, insert_lap_data, insert_participant_data
 
 app = Flask(__name__)
@@ -29,17 +30,32 @@ def simulate():
 @app.route('/api/simulate-lap-time', methods=['GET'])
 def simulate_lap_time():
     track = int(request.args.get('track'))
-    fuelintank = int(request.args.get('fuelintank'))
+    fuelInTank = int(request.args.get('fuelInTank'))
     weather = int(request.args.get('weather'))
     trackTemp = int(request.args.get('trackTemp'))
     airTemp = int(request.args.get('airTemp'))
     tyreWear = int(request.args.get('tyreWear'))
     tyreCompound = int(request.args.get('tyreCompound'))
 
-    lap_time = simulate_lap(fuelintank, track, weather, airTemp, trackTemp, tyreWear, tyreCompound)
+    lap_time = simulate_lap(fuelInTank, track, weather, airTemp, trackTemp, tyreWear, tyreCompound)
 
     return jsonify({
         "lap_time": lap_time,
+    })
+
+@app.route('/api/simulate-tyre-wear', methods=['GET'])
+def simulate_tyre_wear():
+    track = int(request.args.get('track'))
+    lapAmount = int(request.args.get('lapAmount'))
+    tyreCompound = int(request.args.get('tyreCompound'))
+    weather = int(request.args.get('weather'))
+    airTemp = int(request.args.get('airTemp'))
+    trackTemp = int(request.args.get('trackTemp'))
+
+    tyre_wear = simulate_tyre(track, lapAmount, tyreCompound, weather, airTemp, trackTemp)
+
+    return jsonify({
+        "tyre_wear": tyre_wear,
     })
 
 @app.route('/api/connect', methods=['POST'])

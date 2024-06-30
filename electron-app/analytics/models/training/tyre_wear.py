@@ -1,4 +1,4 @@
-from ..queries.tyre_wear import *
+from ..queries.tyre_wear import numerical_features, categorical_features, target, df
 from sklearn.model_selection import cross_val_score
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import OneHotEncoder
@@ -20,4 +20,4 @@ model = Pipeline(steps=[('preprocessor', preprocessor),
 
 cv_scores = cross_val_score(model, X, y, cv=5, scoring='neg_root_mean_squared_error')
 mean_cv_score = -np.mean(cv_scores)
-print(f"Tyre Wear Testing - Best CV Score (RMSE): {mean_cv_score}")
+print(f"Tyre Wear Testing - Best CV Score (RMSE)1: {mean_cv_score}")

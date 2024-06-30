@@ -1,4 +1,4 @@
-from ..queries.tyre_wear import *
+from ..queries.tyre_wear import numerical_features, categorical_features, target, df
 from sklearn.preprocessing import RobustScaler
 from sklearn.model_selection import cross_val_score
 from sklearn.linear_model import LinearRegression
@@ -14,7 +14,7 @@ y = df[target]
 
 preprocessor = ColumnTransformer(
     transformers=[
-        ('num', RobustScaler(), numerical_features),
+        ('num', 'passthrough', numerical_features),
         ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_features)])
 
 model = Pipeline(steps=[('preprocessor', preprocessor),
@@ -22,8 +22,8 @@ model = Pipeline(steps=[('preprocessor', preprocessor),
 
 cv_scores = cross_val_score(model, X, y, cv=5, scoring='neg_root_mean_squared_error')
 mean_cv_score = -np.mean(cv_scores)
-print(f"Tyre Wear Creation - #6: robustscaler: {mean_cv_score}")
+print(f"Tyre Wear Creation - #9: robustscaler: {mean_cv_score}")
 
 model.fit(X,y)
-dump(model, 'linear_regression_tyre_wear_predictor6.joblib')
+dump(model, 'linear_regression_tyre_wear_predictor10.joblib')
 

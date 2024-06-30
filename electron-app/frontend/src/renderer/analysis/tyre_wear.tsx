@@ -41,26 +41,26 @@ const sliderToTyreCompound = [7, 8, 16, 17, 18, 19, 20, 21];
 const tyreCompoundToSlider = (compound: number) => sliderToTyreCompound.indexOf(compound) + 1;
 
 const trackOptions = [
-  { value: 0, label: 'Melbourne', imageUrl: australiaTrack },
-  { value: 1, label: 'Paul Ricard', imageUrl: franceTrack },
-  { value: 2, label: 'Shanghai', imageUrl: chinaTrack },
-  { value: 3, label: 'Bahrain', imageUrl: bahrainTrack },
-  { value: 4, label: 'Catalunya', imageUrl: spainTrack },
-  { value: 5, label: 'Monaco', imageUrl: monacoTrack },
-  { value: 6, label: 'Montreal', imageUrl: canadaTrack },
-  { value: 7, label: 'Silverstone', imageUrl: greatbritainTrack },
-  { value: 9, label: 'Hungaroring', imageUrl: hungaryTrack },
-  { value: 10, label: 'Spa', imageUrl: belgiumTrack },
-  { value: 11, label: 'Monza', imageUrl: monzaTrack },
-  { value: 12, label: 'Singapore', imageUrl: singaporeTrack },
-  { value: 13, label: 'Suzuka', imageUrl: japanTrack },
-  { value: 14, label: 'Abu Dhabi', imageUrl: abudhabiTrack },
-  { value: 15, label: 'Texas', imageUrl: usaTrack },
-  { value: 16, label: 'Brazil', imageUrl: brazilTrack },
-  { value: 17, label: 'Austria', imageUrl: austriaTrack },
-  { value: 18, label: 'Sochi', imageUrl: russiaTrack },
-  { value: 19, label: 'Mexico', imageUrl: mexicoTrack },
-  { value: 20, label: 'Baku', imageUrl: azerbaijanTrack }
+  { value: 0, label: 'Melbourne', imageUrl: australiaTrack, lapAmount: 58 },
+  { value: 1, label: 'Paul Ricard', imageUrl: franceTrack, lapAmount: 53 },
+  { value: 2, label: 'Shanghai', imageUrl: chinaTrack, lapAmount: 56 },
+  { value: 3, label: 'Bahrain', imageUrl: bahrainTrack, lapAmount: 57 },
+  { value: 4, label: 'Catalunya', imageUrl: spainTrack, lapAmount: 66 },
+  { value: 5, label: 'Monaco', imageUrl: monacoTrack, lapAmount: 78 },
+  { value: 6, label: 'Montreal', imageUrl: canadaTrack, lapAmount: 70 },
+  { value: 7, label: 'Silverstone', imageUrl: greatbritainTrack, lapAmount: 52 },
+  { value: 9, label: 'Hungaroring', imageUrl: hungaryTrack, lapAmount: 70 },
+  { value: 10, label: 'Spa', imageUrl: belgiumTrack, lapAmount: 44 },
+  { value: 11, label: 'Monza', imageUrl: monzaTrack, lapAmount: 53 },
+  { value: 12, label: 'Singapore', imageUrl: singaporeTrack, lapAmount: 62 },
+  { value: 13, label: 'Suzuka', imageUrl: japanTrack, lapAmount: 53 },
+  { value: 14, label: 'Abu Dhabi', imageUrl: abudhabiTrack, lapAmount: 58 },
+  { value: 15, label: 'Texas', imageUrl: usaTrack, lapAmount: 56 },
+  { value: 16, label: 'Brazil', imageUrl: brazilTrack, lapAmount: 71 },
+  { value: 17, label: 'Austria', imageUrl: austriaTrack, lapAmount: 71 },
+  { value: 18, label: 'Sochi', imageUrl: russiaTrack, lapAmount: 53 },
+  { value: 19, label: 'Mexico', imageUrl: mexicoTrack, lapAmount: 71 },
+  { value: 20, label: 'Baku', imageUrl: azerbaijanTrack, lapAmount: 51 }
 ];
 
 import clearIcon from '../../../../assets/weather_icons/clear.svg';
@@ -69,6 +69,7 @@ import overcastIcon from '../../../../assets/weather_icons/overcast.svg';
 import lightrainIcon from '../../../../assets/weather_icons/lightrain.svg';
 import heavyrainIcon from '../../../../assets/weather_icons/heavyrain.svg';
 import stormIcon from '../../../../assets/weather_icons/storm.svg';
+import { max } from 'lodash';
 const weatherIcons = [
   { value: 0, label: 'Clear', imageUrl: clearIcon },
   { value: 1, label: 'LightCloud', imageUrl: lightcloudIcon },
@@ -78,7 +79,7 @@ const weatherIcons = [
   { value: 5, label: 'Storm', imageUrl: stormIcon },
 ]
 
-interface TyreData {
+interface TyreWear {
   lap: number;
   tyre_wear: number;
   tyre_type: number;
@@ -88,17 +89,18 @@ interface LapTimeProps {
   darkMode: boolean;
 }
 
-const LapTime: React.FC<LapTimeProps> = ({ darkMode }) => {
+const TyreWear: React.FC<LapTimeProps> = ({ darkMode }) => {
   const [track, setTrack] = useState(trackOptions[0].value);
   const [trackImageUrl, setTrackImageUrl] = useState(trackOptions[0].imageUrl);
+  const [tyreCompound, setTyreCompound] = useState(16);
+  const [lapAmount, setLapAmount] = useState(0);
+  const [maxLapAmount, setMaxLapAmount] = useState(trackOptions[0].lapAmount);
+  const [resultTyreWear, setResultTyreWear] = useState();
   const [weather, setWeather] = useState(weatherIcons[0].value)
   const [weatherIconUrl, setWeatherIconUrl] = useState(weatherIcons[0].imageUrl);
   const [weatherLabel, setWeatherLabel] = useState(weatherIcons[0].label);
   const [trackTemp, setTrackTemp] = useState(15);
   const [airTemp, setAirTemp] = useState(15);
-  const [fuelInTank, setFuelInTank] = useState(110);
-  const [tyreWear, setTyreWear] = useState(0);
-  const [tyreCompound, setTyreCompound] = useState(16);
 
   const handleWeatherChange = (event: Event, value: number | number[]) => {
     const selectedWeather = weatherIcons.find(icon => icon.value === value);
@@ -114,26 +116,11 @@ const LapTime: React.FC<LapTimeProps> = ({ darkMode }) => {
     setTyreCompound(compound);
   };
   const [isLoading, setIsLoading] = useState(false);
-  const [lapTime, setLapTime] = useState<string>()
-
-  function formatTime(totalSeconds: number) {
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds - (hours * 3600)) / 60);
-    const seconds = Math.floor(totalSeconds - (hours * 3600) - (minutes * 60));
-    const milliseconds = Math.round((totalSeconds - Math.floor(totalSeconds)) * 1000);
-
-    const formattedHours = String(hours).padStart(2, '0');
-    const formattedMinutes = String(minutes).padStart(2, '0');
-    const formattedSeconds = String(seconds).padStart(2, '0');
-    const formattedMilliseconds = String(milliseconds).padStart(3, '0');
-
-    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}:${formattedMilliseconds}`;
-  }
 
   const handleSimulate = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch(`http://localhost:5001/api/simulate-lap-time?track=${encodeURIComponent(track)}&fuelInTank=${encodeURIComponent(fuelInTank)}&weather=${encodeURIComponent(weather)}&trackTemp=${encodeURIComponent(trackTemp)}&airTemp=${encodeURIComponent(airTemp)}&tyreWear=${encodeURIComponent(tyreWear)}&tyreCompound=${encodeURIComponent(tyreCompound)}`, {
+      const response = await fetch(`http://localhost:5001/api/simulate-tyre-wear?track=${encodeURIComponent(track)}&tyreCompound=${encodeURIComponent(tyreCompound)}&lapAmount=${encodeURIComponent(lapAmount)}&weather=${encodeURIComponent(weather)}&airTemp=${encodeURIComponent(airTemp)}&trackTemp=${encodeURIComponent(trackTemp)}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -145,9 +132,9 @@ const LapTime: React.FC<LapTimeProps> = ({ darkMode }) => {
       }
 
       const data = await response.json();
-      if(data.lap_time) {
-        const formattedLapTime = formatTime(data.lap_time);
-        setLapTime(formattedLapTime);
+
+      if(data.tyre_wear) {
+        setResultTyreWear(data.tyre_wear);
       }
     } catch (error) {
       console.error('Failed to simulate:', error);
@@ -161,9 +148,9 @@ const LapTime: React.FC<LapTimeProps> = ({ darkMode }) => {
       <div>
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '20px' }} className="slider-blue">
           <div style={{ width: '45%' }}>
-            <div>Fuel in Tank</div>
-            <Slider value={fuelInTank} onChange={(e, value) => setFuelInTank(value as number)} min={1} max={110} />
-            <div className="bebas-neue-bold">{fuelInTank} kg</div>
+            <div>Laps Used</div>
+            <Slider value={lapAmount} onChange={(e, value) => setLapAmount(value as number)} min={1} max={maxLapAmount} />
+            <div className="bebas-neue-bold">{lapAmount} Laps</div>
 
             <div>Track</div>
             <FormControl fullWidth>
@@ -175,6 +162,7 @@ const LapTime: React.FC<LapTimeProps> = ({ darkMode }) => {
                   if (selectedTrack) {
                     setTrack(selectedTrack.value);
                     setTrackImageUrl(selectedTrack.imageUrl);
+                    setMaxLapAmount(selectedTrack.lapAmount)
                   }
                 }}
               >
@@ -192,12 +180,6 @@ const LapTime: React.FC<LapTimeProps> = ({ darkMode }) => {
                 className="track-image"
                 style={{ paddingTop: '10px', alignItems: 'center'}} />}
             </div>
-
-            <div>Tyre Wear</div>
-            <div style = {{ display:'flex', alignItems: 'center'}} className="slider-container">
-              <Slider value={tyreWear} onChange={(e, value) => setTyreWear(value as number)} min={0} max={100} style={{ flexGrow: 1, margin: '0 20px' }}/>
-            </div>
-            <div className="bebas-neue-bold">{tyreWear}%</div>
           </div>
 
           <div style={{ width: '45%' }}>
@@ -269,9 +251,9 @@ const LapTime: React.FC<LapTimeProps> = ({ darkMode }) => {
           {isLoading ? <CircularProgress size={24} color="inherit" /> : "Simulate"}
         </Button>
       </div>
-      <div> {lapTime && <div className="bebas-neue-result"> Time: {lapTime}</div>}</div>
+      <div> {resultTyreWear && <div className="bebas-neue-result"> Tyre Wear: {resultTyreWear}</div>}</div>
     </div>
   );
 };
 
-export default LapTime;
+export default TyreWear;

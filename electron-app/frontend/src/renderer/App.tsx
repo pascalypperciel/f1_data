@@ -50,6 +50,7 @@ function App() {
   const analysisTabs = [
     { label: "Tyre Strategy", route: "/analysis/tyrestrategy" },
     { label: "Lap Time", route: "/analysis/laptime" },
+    { label: "Tyre Wear", route: "/analysis/tyrewear" },
   ];
 
   const settingsTabs = [
