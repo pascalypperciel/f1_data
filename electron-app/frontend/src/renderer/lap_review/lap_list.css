@@ -18,10 +18,6 @@
   border-bottom: 1px solid #ddd;
 }
 
-.lap-row.selected {
-  background-color: #f0f0f0;
-}
-
 .lap-row:hover {
   background-color: #e0e0e0; /* Highlight on hover */
 }

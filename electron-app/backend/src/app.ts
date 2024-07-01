@@ -40,7 +40,7 @@ app.get('/api/get_lap_rows', async (req, res) => {
       console.error ("pool is null");
     } else {
       const queryResult = await pool.query(
-        `SELECT DISTINCT ct.*,
+        `SELECT DISTINCT
           ct.frameidentifier,
           ct.speed,
           ct.throttle,
@@ -48,12 +48,6 @@ app.get('/api/get_lap_rows', async (req, res) => {
           ct.brake,
           ct.clutch,
           ct.gear,
-          ct.enginerpm,
-          ct.drsenabled,
-          ct.frtyresurfacetemp,
-          ct.fltyresurfacetemp,
-          ct.rrtyresurfacetemp,
-          ct.rltyresurfacetemp,
           cse.frontwing,
           cse.rearwing,
           cse.onthrottle,
@@ -74,33 +68,19 @@ app.get('/api/get_lap_rows', async (req, res) => {
           cse.reartyrepressure,
           cse.ballast,
           cse.fuelload,
-          cst.fuelmix,
-          cst.frontbrakebias,
-          cst.pitlimiter,
-          cst.maxrpm,
-          cst.idlerpm,
-          cst.maxgears,
-          cst.maxgears,
-          cst.frtyrewear,
-          cst.fltyrewear,
-          cst.rrtyrewear,
-          cst.rltyrewear,
-          cst.actualtyrecompound,
-          l.currentlaptime,
-          l.currentlapnum
+          ROUND(cast(l.currentlaptime as numeric), 2) AS currentlaptime,
+          l.currentlapnum,
+          ROUND(cast(l.lapdistance as numeric), 2) AS lapdistance
         FROM cartelemetry ct
-        JOIN carsetup cse ON abs(cse.frameidentifier - ct.frameidentifier) < 3
-        JOIN carstatus cst ON abs(cst.frameidentifier - ct.frameidentifier) < 3
-        JOIN lap l ON abs(l.frameidentifier - ct.frameidentifier) < 3
+        JOIN carsetup cse ON abs(cse.frameidentifier - ct.frameidentifier) < 500
+        JOIN lap l ON l.frameidentifier > ct.frameidentifier and l.frameidentifier - ct.frameidentifier < 3
         WHERE ct.thisindex = ct.playercarindex
           AND cse.thisindex = cse.playercarindex
-          AND cst.thisindex = cst.playercarindex
           AND l.thisindex = l.playercarindex
           AND ct.sessionuid = 6
           AND cse.sessionuid = 6
-          AND cst.sessionuid = 6
           AND l.sessionuid = 6
-        ORDER BY ct.frameidentifier`
+        ORDER BY ct.frameidentifier, lapdistance`
       );
       res.json(queryResult.rows);
       console.log("success");

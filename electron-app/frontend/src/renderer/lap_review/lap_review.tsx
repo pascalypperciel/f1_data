@@ -6,14 +6,13 @@ import "./lap_review.css";
 
 function LapReview() {
   const [laps, setLaps] = useState([]);
-  const [selectedLap, setSelectedLap] = useState(null);
+  const [selectedLaps, setSelectedLaps] = useState<string[]>([]);
 
   const handleImport = async () => {
     try {
       const response = await fetch('http://localhost:3001/api/get_lap_rows');
       const data = await response.json();
 
-      // Group rows by currentlapnum
       const groupedLaps = data.reduce((acc, row) => {
         const lapNum = row.currentlapnum;
         if (!acc[lapNum]) {
@@ -43,9 +42,15 @@ function LapReview() {
     return `${pad(minutes, 2)}:${pad(secs, 2)}:${pad(millis, 3)}`;
   };
 
-  const handleLapClick = (lapNum) => {
-    setSelectedLap(lapNum);
+  const handleLapChange = (lapNum) => {
+    setSelectedLaps((prevSelectedLaps) =>
+      prevSelectedLaps.includes(lapNum)
+        ? prevSelectedLaps.filter((num) => num !== lapNum)
+        : [...prevSelectedLaps, lapNum]
+    );
   };
+
+  const selectedLapData = selectedLaps.map((lapNum) => laps[lapNum]);
 
   return (
     <div className="lap-review-container">
@@ -58,13 +63,13 @@ function LapReview() {
       </Button>
       <LapList
         laps={laps}
-        onLapClick={handleLapClick}
-        selectedLap={selectedLap}
+        selectedLaps={selectedLaps}
+        onLapChange={handleLapChange}
         formatTime={formatTime}
         getFinalLapTime={getFinalLapTime}
       />
-      {selectedLap && (
-        <LapDetails lap={laps[selectedLap]} lapNum={selectedLap} />
+      {selectedLaps.length > 0 && (
+        <LapDetails lap={selectedLapData} lapNums={selectedLaps} />
       )}
     </div>
   );

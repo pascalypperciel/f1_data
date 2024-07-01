@@ -1,51 +1,58 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome} from '@fortawesome/free-solid-svg-icons';
-import { useCarTelemetryData } from '../../websocket';
+import "../components.css";
 
 interface GearProps {
-  isSelectedForHome: boolean;
-  onToggleSelected: () => void;
+  gearDataSets: { gear: number, distance: number }[][];
 }
 
-interface GearDataPoint {
-  gear: number;
-  frame: number;
-}
+const Gear: React.FC<GearProps> = ({ gearDataSets }) => {
+  const colors = [
+    "#FF0000",
+    "#0000FF",
+    "#00FF00",
+    "#FFFF00",
+    "#FF00FF",
+    "#00FFFF",
+    "#8884d8",
+    "#82ca9d",
+    "#ffc658",
+    "#FF5733",
+    "#C70039",
+    "#900C3F",
+    "#581845",
+    "#DAF7A6",
+    "#FFC300",
+    "#FF5733",
+    "#C70039",
+    "#900C3F",
+    "#581845",
+    "#DAF7A6",
+    "#FFC300",
+    "#FF5733",
+    "#C70039",
+    "#900C3F",
+    "#581845",
+    "#DAF7A6",
+    "#FFC300"
+  ];
 
-const Gear: React.FC<GearProps> = ({ isSelectedForHome, onToggleSelected }) => {
-  const [gearData, setGearData] = useState<GearDataPoint[]>([]);
-  const carTelemetryData = useCarTelemetryData();
-
-  useEffect(() => {
-    if (carTelemetryData) {
-      const newGearDataPoint = { gear: carTelemetryData.gear, frame: carTelemetryData.frame };
-      setGearData((prevGearData) => [...prevGearData, newGearDataPoint]);
-    }
-  }, [carTelemetryData]);
+  const allDataPoints = gearDataSets.flat();
+  const maxDistance = Math.max(...allDataPoints.map(d => d.distance));
 
   return (
     <div>
-      <h3 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span>Gear</span>
-        <FontAwesomeIcon
-          icon={faHome}
-          onClick={onToggleSelected}
-          style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
-        />
-      </h3>
       <div>
-        <div className='text-over-graph'>Gear Selected</div>
-        <div className='number-over-graph'> {gearData.length > 0 ? gearData[gearData.length - 1].gear : 'N/A'}</div>
+        <div className='text-over-graph'>Gear</div>
       </div>
       <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={gearData}>
-          <CartesianGrid strokeDasharray="3 3" vertical={false}/>
-          <XAxis hide dataKey="frame"/>
+        <LineChart>
+          <CartesianGrid strokeDasharray="3 3" vertical={false} />
+          <XAxis dataKey="distance" type="number" domain={[0, maxDistance]}/>
           <YAxis dataKey="gear"/>
-          <Tooltip />
-          <Line type="monotone" dataKey="gear" stroke="#8884d8" dot={false}/>
+          {gearDataSets.map((gearData, index) => (
+            <Line key={index} type="monotone" dataKey="gear" data={gearData} stroke={colors[index % colors.length]} dot={false} />
+          ))}
         </LineChart>
       </ResponsiveContainer>
     </div>

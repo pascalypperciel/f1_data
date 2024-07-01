@@ -1,51 +1,58 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
-import { useCarTelemetryData } from '../../websocket';
+import "../components.css";
 
 interface ThrottleProps {
-  isSelectedForHome: boolean;
-  onToggleSelected: () => void;
+  throttleDataSets: { throttle: number, distance: number }[][];
 }
 
-interface ThrottleDataPoint {
-  throttle: number;
-  frame: number;
-}
+const Throttle: React.FC<ThrottleProps> = ({ throttleDataSets }) => {
+  const colors = [
+    "#FF0000",
+    "#0000FF",
+    "#00FF00",
+    "#FFFF00",
+    "#FF00FF",
+    "#00FFFF",
+    "#8884d8",
+    "#82ca9d",
+    "#ffc658",
+    "#FF5733",
+    "#C70039",
+    "#900C3F",
+    "#581845",
+    "#DAF7A6",
+    "#FFC300",
+    "#FF5733",
+    "#C70039",
+    "#900C3F",
+    "#581845",
+    "#DAF7A6",
+    "#FFC300",
+    "#FF5733",
+    "#C70039",
+    "#900C3F",
+    "#581845",
+    "#DAF7A6",
+    "#FFC300"
+  ];
 
-const Throttle: React.FC<ThrottleProps> = ({ isSelectedForHome, onToggleSelected }) => {
-  const [throttleData, setThrottleData] = useState<ThrottleDataPoint[]>([]);
-  const carTelemetryData = useCarTelemetryData();
-
-  useEffect(() => {
-    if (carTelemetryData) {
-      const newThrottleDataPoint = { throttle: carTelemetryData.throttle, frame: carTelemetryData.frame };
-      setThrottleData((prevThrottleData) => [...prevThrottleData, newThrottleDataPoint]);
-    }
-  }, [carTelemetryData]);
+  const allDataPoints = throttleDataSets.flat();
+  const maxDistance = Math.max(...allDataPoints.map(d => d.distance));
 
   return (
     <div>
-      <h3 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span>Throttle</span>
-        <FontAwesomeIcon
-          icon={faHome}
-          onClick={onToggleSelected}
-          style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
-        />
-      </h3>
       <div>
-        <div className='text-over-graph'>Throttle Pedal Pressure</div>
-        <div className='number-over-graph'> {throttleData.length > 0 ? throttleData[throttleData.length - 1].throttle * 100 : 'N/A'}%</div>
+        <div className='text-over-graph'>Throttle</div>
       </div>
       <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={throttleData}>
-          <CartesianGrid strokeDasharray="3 3" vertical={false}/>
-          <XAxis hide dataKey="frame"/>
+        <LineChart>
+          <CartesianGrid strokeDasharray="3 3" vertical={false} />
+          <XAxis dataKey="distance" type="number" domain={[0, maxDistance]}/>
           <YAxis dataKey="throttle"/>
-          <Tooltip />
-          <Line type="monotone" dataKey="throttle" stroke="#8884d8" dot={false}/>
+          {throttleDataSets.map((throttleData, index) => (
+            <Line key={index} type="monotone" dataKey="throttle" data={throttleData} stroke={colors[index % colors.length]} dot={false} />
+          ))}
         </LineChart>
       </ResponsiveContainer>
     </div>

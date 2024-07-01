@@ -1,51 +1,58 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
-import { useCarTelemetryData } from '../../websocket';
+import "../components.css";
 
 interface BrakeProps {
-  isSelectedForHome: boolean;
-  onToggleSelected: () => void;
+  brakeDataSets: { brake: number, distance: number }[][];
 }
 
-interface BrakeDataPoint {
-  brake: number;
-  frame: number;
-}
+const Brake: React.FC<BrakeProps> = ({ brakeDataSets }) => {
+  const colors = [
+    "#FF0000",
+    "#0000FF",
+    "#00FF00",
+    "#FFFF00",
+    "#FF00FF",
+    "#00FFFF",
+    "#8884d8",
+    "#82ca9d",
+    "#ffc658",
+    "#FF5733",
+    "#C70039",
+    "#900C3F",
+    "#581845",
+    "#DAF7A6",
+    "#FFC300",
+    "#FF5733",
+    "#C70039",
+    "#900C3F",
+    "#581845",
+    "#DAF7A6",
+    "#FFC300",
+    "#FF5733",
+    "#C70039",
+    "#900C3F",
+    "#581845",
+    "#DAF7A6",
+    "#FFC300"
+  ];
 
-const Brake: React.FC<BrakeProps> = ({ isSelectedForHome, onToggleSelected }) => {
-  const [brakeData, setBrakeData] = useState<BrakeDataPoint[]>([]);
-  const carTelemetryData = useCarTelemetryData();
-
-  useEffect(() => {
-    if (carTelemetryData) {
-      const newSpeedDataPoint = { brake: carTelemetryData.brake, frame: carTelemetryData.frame };
-      setBrakeData((prevSpeedData) => [...prevSpeedData, newSpeedDataPoint]);
-    }
-  }, [carTelemetryData]);
+  const allDataPoints = brakeDataSets.flat();
+  const maxDistance = Math.max(...allDataPoints.map(d => d.distance));
 
   return (
     <div>
-      <h3 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span>Brake</span>
-        <FontAwesomeIcon
-          icon={faHome}
-          onClick={onToggleSelected}
-          style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
-        />
-      </h3>
       <div>
-        <div className='text-over-graph'>Brake Pedal Pressure</div>
-        <div className='number-over-graph'> {brakeData.length > 0 ? brakeData[brakeData.length - 1].brake * 100 : 'N/A'}%</div>
+        <div className='text-over-graph'>Brake</div>
       </div>
       <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={brakeData}>
-          <CartesianGrid strokeDasharray="3 3" vertical={false}/>
-          <XAxis hide dataKey="frame"/>
+        <LineChart>
+          <CartesianGrid strokeDasharray="3 3" vertical={false} />
+          <XAxis dataKey="distance" type="number" domain={[0, maxDistance]}/>
           <YAxis dataKey="brake"/>
-          <Tooltip />
-          <Line type="monotone" dataKey="brake" stroke="#8884d8" dot={false}/>
+          {brakeDataSets.map((brakeData, index) => (
+            <Line key={index} type="monotone" dataKey="brake" data={brakeData} stroke={colors[index % colors.length]} dot={false} />
+          ))}
         </LineChart>
       </ResponsiveContainer>
     </div>

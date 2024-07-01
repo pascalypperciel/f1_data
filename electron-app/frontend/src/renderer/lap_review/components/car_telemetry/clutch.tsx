@@ -1,51 +1,58 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome} from '@fortawesome/free-solid-svg-icons';
-import { useCarTelemetryData } from '../../websocket';
+import "../components.css";
 
 interface ClutchProps {
-  isSelectedForHome: boolean;
-  onToggleSelected: () => void;
+  clutchDataSets: { clutch: number, distance: number }[][];
 }
 
-interface ClutchDataPoint {
-  clutch: number;
-  frame: number;
-}
+const Clutch: React.FC<ClutchProps> = ({ clutchDataSets }) => {
+  const colors = [
+    "#FF0000",
+    "#0000FF",
+    "#00FF00",
+    "#FFFF00",
+    "#FF00FF",
+    "#00FFFF",
+    "#8884d8",
+    "#82ca9d",
+    "#ffc658",
+    "#FF5733",
+    "#C70039",
+    "#900C3F",
+    "#581845",
+    "#DAF7A6",
+    "#FFC300",
+    "#FF5733",
+    "#C70039",
+    "#900C3F",
+    "#581845",
+    "#DAF7A6",
+    "#FFC300",
+    "#FF5733",
+    "#C70039",
+    "#900C3F",
+    "#581845",
+    "#DAF7A6",
+    "#FFC300"
+  ];
 
-const Clutch: React.FC<ClutchProps> = ({ isSelectedForHome, onToggleSelected }) => {
-  const [clutchData, setClutchData] = useState<ClutchDataPoint[]>([]);
-  const carTelemetryData = useCarTelemetryData();
-
-  useEffect(() => {
-    if (carTelemetryData) {
-      const newClutchDataPoint = { clutch: carTelemetryData.clutch, frame: carTelemetryData.frame };
-      setClutchData((prevClutchData) => [...prevClutchData, newClutchDataPoint]);
-    }
-  }, [carTelemetryData]);
+  const allDataPoints = clutchDataSets.flat();
+  const maxDistance = Math.max(...allDataPoints.map(d => d.distance));
 
   return (
     <div>
-      <h3 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span>Clutch</span>
-        <FontAwesomeIcon
-          icon={faHome}
-          onClick={onToggleSelected}
-          style={{ color: isSelectedForHome ? 'blue' : 'grey', cursor: 'pointer' }}
-        />
-      </h3>
       <div>
-        <div className='text-over-graph'>Amount of Clutch Applied</div>
-        <div className='number-over-graph'> {clutchData.length > 0 ? clutchData[clutchData.length - 1].clutch : 'N/A'}%</div>
+        <div className='text-over-graph'>Clutch</div>
       </div>
       <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={clutchData}>
-          <CartesianGrid strokeDasharray="3 3" vertical={false}/>
-          <XAxis hide dataKey="frame"/>
+        <LineChart>
+          <CartesianGrid strokeDasharray="3 3" vertical={false} />
+          <XAxis dataKey="distance" type="number" domain={[0, maxDistance]}/>
           <YAxis dataKey="clutch"/>
-          <Tooltip />
-          <Line type="monotone" dataKey="clutch" stroke="#8884d8" dot={false}/>
+          {clutchDataSets.map((clutchData, index) => (
+            <Line key={index} type="monotone" dataKey="clutch" data={clutchData} stroke={colors[index % colors.length]} dot={false} />
+          ))}
         </LineChart>
       </ResponsiveContainer>
     </div>
