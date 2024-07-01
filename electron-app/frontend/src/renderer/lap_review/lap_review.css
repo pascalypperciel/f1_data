@@ -1,15 +1,33 @@
 .lap-review-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   height: 100vh;
   overflow: hidden;
   position: relative;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
-.import-button {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 10;
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.import-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.clear-button,
+.import-button,
+.import-textfield .MuiInputBase-root {
+  height: 56px;
+}
+
+.clear-button {
+  align-self: flex-end;
 }

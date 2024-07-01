@@ -9,6 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AnalysisIcon from "@mui/icons-material/Insights";
 import SettingsIcon from "@mui/icons-material/Settings";
+import LapsIcon from "@mui/icons-material/AvTimer";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Divider from "@mui/material/Divider";
@@ -72,7 +73,7 @@ function Sidebar({ open, setOpen }: SidebarProps) {
             onClick={() => navigate("/lap")}
           >
             <ListItemIcon>
-              <SettingsIcon />
+              <LapsIcon />
             </ListItemIcon>
             {open && <ListItemText primary="Lap Review" />}
           </ListItemButton>

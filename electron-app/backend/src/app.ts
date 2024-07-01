@@ -36,6 +36,12 @@ app.post('/api/connect_database', async (req, res) => {
 
 app.get('/api/get_lap_rows', async (req, res) => {
   try {
+    const sessionuid = req.query.sessionuid;
+
+    if (!sessionuid) {
+      return res.status(400).json({ message: 'sessionuid query parameter is required' });
+    }
+
     if (pool === null) {
       console.error ("pool is null");
     } else {
@@ -77,10 +83,11 @@ app.get('/api/get_lap_rows', async (req, res) => {
         WHERE ct.thisindex = ct.playercarindex
           AND cse.thisindex = cse.playercarindex
           AND l.thisindex = l.playercarindex
-          AND ct.sessionuid = 6
-          AND cse.sessionuid = 6
-          AND l.sessionuid = 6
-        ORDER BY ct.frameidentifier, lapdistance`
+          AND ct.sessionuid = $1
+          AND cse.sessionuid = $1
+          AND l.sessionuid = $1
+        ORDER BY ct.frameidentifier, lapdistance`,
+        [sessionuid]
       );
       res.json(queryResult.rows);
       console.log("success");
