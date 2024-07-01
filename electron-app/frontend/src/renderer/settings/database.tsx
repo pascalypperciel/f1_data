@@ -46,6 +46,13 @@ const Database = () => {
         body: JSON.stringify(credentials)
       });
       if (response.ok) {
+        await fetch('http://localhost:3001/api/connect_database', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(credentials)
+        });
         setIsConnected(true);
       } else {
         const data = await response.json();

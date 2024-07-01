@@ -68,6 +68,15 @@ function Sidebar({ open, setOpen }: SidebarProps) {
             {open && <ListItemText primary="Dashboard" />}
           </ListItemButton>
           <ListItemButton
+            selected={matchRoute("/lap")}
+            onClick={() => navigate("/lap")}
+          >
+            <ListItemIcon>
+              <SettingsIcon />
+            </ListItemIcon>
+            {open && <ListItemText primary="Lap Review" />}
+          </ListItemButton>
+          <ListItemButton
             selected={matchRoute("/analysis")}
             onClick={() => navigate("/analysis")}
           >

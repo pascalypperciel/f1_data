@@ -1,0 +1,15 @@
+.lap-review-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.import-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+}

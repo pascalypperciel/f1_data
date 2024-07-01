@@ -10,6 +10,8 @@ app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:4343"}})
 connection = None
 
+_credentials = None
+
 # API Calls
 @app.route('/api/simulate-tyre-strategy', methods=['GET'])
 def simulate():
@@ -60,8 +62,10 @@ def simulate_tyre_wear():
 
 @app.route('/api/connect', methods=['POST'])
 def connect():
+    global _credentials
     credentials = request.json
     if create_connection(credentials):
+        _credentials = credentials
         return jsonify({'message': 'Connection successful', 'status': True})
     else:
         return jsonify({'message': 'Connection failed', 'status': False}), 400
@@ -72,6 +76,11 @@ def disconnect():
     connection.close()
     connection = None
     return jsonify({'message': 'Connection successful', 'status': True})
+
+@app.route('/api/get-db-credentials', methods=['GET'])
+def get_database_credentials():
+    global _credentials
+    return jsonify(_credentials)
 
 # Helpers
 def create_connection(credentials):

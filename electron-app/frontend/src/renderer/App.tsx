@@ -6,6 +6,7 @@ import Sidebar, { drawerWidth } from "./navigation/sidebar";
 import TopBar from "./navigation/topbar";
 import Dashboard from "./live_dashboard/dashboard";
 import Analysis from "./analysis/analysis";
+import LapReview from "./lap_review/lap_review";
 import Settings from "./settings/settings";
 import CssBaseline from '@mui/material/CssBaseline';
 import { WebSocketProvider } from "./live_dashboard/websocket";
@@ -72,6 +73,14 @@ function App() {
                     <>
                       <TopBar tabs={dashboardTabs} />
                       <Dashboard />
+                    </>
+                  }
+                />
+                <Route
+                  path="/lap/*"
+                  element={
+                    <>
+                      <LapReview darkMode={darkMode}/>
                     </>
                   }
                 />

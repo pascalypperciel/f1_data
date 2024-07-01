@@ -1,0 +1,27 @@
+.laps-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 200px;
+  overflow-y: auto;
+  width: 100%;
+  border: 1px solid #ddd;
+  padding: 10px;
+  box-sizing: border-box;
+  margin-top: 60px; /* Space for the fixed import button */
+}
+
+.lap-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+}
+
+.lap-row.selected {
+  background-color: #f0f0f0;
+}
+
+.lap-row:hover {
+  background-color: #e0e0e0; /* Highlight on hover */
+}

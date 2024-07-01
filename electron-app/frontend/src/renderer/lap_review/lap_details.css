@@ -1,0 +1,20 @@
+.lap-details {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.lap-data-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lap-details, .lap-data-container {
+  overflow-x: hidden;
+}

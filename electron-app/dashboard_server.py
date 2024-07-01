@@ -162,7 +162,7 @@ async def udp_server(host, port, websocket):
             except asyncio.CancelledError:
                 break
             except Exception as e:
-                print(f"Error: {e}")
+                #print(f"Error: {e}")
                 await asyncio.sleep(0.01)
 
 async def websocket_handler(websocket, path):
