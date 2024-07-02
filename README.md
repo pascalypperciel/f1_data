@@ -3,7 +3,7 @@ This project was made with two goals in mind:
 1. I wanted to offer an easy to use interface to display, store, and use telemetry data from the F1 franchise video games.
 2. To serve as a learning opportunity, enhancing my skills in full-stack development (backend, frontend, database, REST API, etc) and also start learning something new: data science and analysis.
 
-Make sure to check the [UPDATES.md](UPDATES.md) file for the updates I posted through the development of this project.
+Make sure to check the [UPDATES.md](UPDATES.md) file for screenshots, short demos, and the updates I posted through the development of this project.
 ## Languages
 - Python: Scripts for data collection and processing from the F1 game. Also all model training and creating were done on Python as well.
 - TypeScript: Superset of JavaScript for enhanced code quality. This was paired with React to make an appealing, modern, and convenient UI. 
