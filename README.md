@@ -1,4 +1,5 @@
 ![Banner](images/banner.jpg)
+## Introduction
 This project was made with two goals in mind:
 1. I wanted to offer an easy to use interface to display, store, and use telemetry data from the F1 franchise video games.
 2. To serve as a learning opportunity, enhancing my skills in full-stack development (backend, frontend, database, REST API, etc) and also start learning something new: data science and analysis.
