@@ -38,7 +38,8 @@ Make sure to check the [UPDATES.md](UPDATES.md) file for the updates I posted th
     - Car Status: Provides detailed status information, including traction control, anti-lock brakes, fuel mix, brake bias, pit limiter status, fuel levels, DRS status, wing, engine, and gearbox damage, FIA flags, and ERS energy details.
     - Lap Data: Provides detailed timing and positional information, including lap times, sector times, distances, car position, lap number, pit status, sector, penalties, grid position, driver status, and result status.
     - Session Data: Provides details about the current session in progress, including weather, temperatures, total laps, track length, track, session time left, session duration safety car status.
+- Users have access to various models to generate the optimal tyre strategy based on their selected inputs. Additionally, there are models available for predicting lap times and tyre wear.
+- The Lap Review tab lets the user import lap data from their selected session and view their lap data and even compare different laps.
 - Allow users to customize their homepage by selecting their preferred telemetry information, ensuring a personalized and engaging experience.
 - The UI offers customizability, allowing users to adjust the display size of different components on the homepage. Additionally, a dark mode option is available to enhance the user experience.
-- Users have access to various models to generate the optimal tyre strategy based on their selected inputs. Additionally, there are models available for predicting lap times and tyre wear.
 - There is also database compatibility, where the user is able to store data on their own database if needed, and even view the data from the database.
